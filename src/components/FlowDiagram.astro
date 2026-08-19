@@ -1,0 +1,166 @@
+---
+// The flow, distilled from the repo's runtime workflow diagram.
+// Styling follows brand spec 6.4: medallion node fills with ink text,
+// slate-mid connectors on light, green-400 on dark, mono sublabels.
+// One geometry: the band lies horizontal on wide screens, vertical on small.
+const steps = [
+  {
+    kind: 'bronze',
+    title: 'Raw data lands',
+    sub: 'bronze · exactly as received',
+  },
+  {
+    kind: 'code',
+    title: 'The profiler describes it',
+    sub: 'deterministic · committed',
+  },
+  {
+    kind: 'agent',
+    title: 'An agent proposes',
+    sub: 'ODCS contract · versioned',
+  },
+  {
+    kind: 'gate',
+    title: 'A human approves',
+    sub: 'every change, no exceptions',
+  },
+  {
+    kind: 'gold',
+    title: 'The engine builds gold',
+    sub: 'dbt + DuckDB · silver, then gold',
+  },
+  {
+    kind: 'answer',
+    title: 'AI answers with meaning',
+    sub: 'MCP serves data + context',
+  },
+];
+---
+
+<ol class="flow">
+  {
+    steps.map((s) => (
+      <li class="step" data-kind={s.kind}>
+        <strong class="step-title">{s.title}</strong>
+        <span class="step-sub">{s.sub}</span>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .flow {
+    list-style: none;
+    display: flex;
+    align-items: stretch;
+    gap: 26px;
+    margin: 36px 0 20px;
+    padding: 0;
+  }
+
+  .step {
+    position: relative;
+    flex: 1 1 0;
+    border-radius: 12px;
+    padding: 16px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    border: 1.5px solid transparent;
+  }
+
+  /* connector chevrons between nodes */
+  .step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -19px;
+    width: 0;
+    height: 0;
+    transform: translateY(-50%);
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-left: 9px solid var(--mm-arrow);
+  }
+
+  .step-title {
+    font-family: 'Manrope', 'Avenir Next', Aptos, Arial, sans-serif;
+    font-weight: 700;
+    font-size: 0.9875rem;
+    line-height: 1.25;
+  }
+
+  .step-sub {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 0.72rem;
+    line-height: 1.4;
+  }
+
+  /* node kinds: fills trace to spec 3.5 (medallion), 3.1 (mint), 3.2 (greens) */
+  [data-kind='bronze'] {
+    background: var(--mm-bronze);
+    color: #04041c;
+  }
+
+  [data-kind='code'] {
+    background: var(--mm-node-code);
+    color: var(--mm-text);
+    border-color: var(--mm-border);
+  }
+
+  [data-kind='agent'] {
+    background: var(--mm-node-agent);
+    color: #04041c;
+  }
+
+  [data-kind='gate'] {
+    background: transparent;
+    color: var(--mm-text);
+    border: 2px solid var(--mm-text);
+  }
+
+  [data-kind='gold'] {
+    background: var(--mm-gold);
+    color: #04041c;
+  }
+
+  [data-kind='answer'] {
+    background: var(--mm-node-answer);
+    color: var(--mm-node-answer-text);
+  }
+
+  [data-kind='bronze'] .step-sub,
+  [data-kind='agent'] .step-sub,
+  [data-kind='gold'] .step-sub {
+    color: #04041c;
+  }
+
+  [data-kind='code'] .step-sub,
+  [data-kind='gate'] .step-sub {
+    color: var(--mm-mono-sub);
+  }
+
+  [data-kind='answer'] .step-sub {
+    color: var(--mm-node-answer-text);
+  }
+
+  @media (max-width: 900px) {
+    .flow {
+      flex-direction: column;
+      gap: 24px;
+      max-width: 460px;
+    }
+
+    .step:not(:last-child)::after {
+      top: auto;
+      right: auto;
+      bottom: -18px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 9px solid var(--mm-arrow);
+      border-bottom: none;
+    }
+  }
+</style>
