@@ -1,0 +1,60 @@
+---
+import Base from '../layouts/Base.astro';
+import symbolLight from '../../brand/favicons/symbol-color_1024.png';
+import symbolDark from '../../brand/favicons/symbol-dark_1024.png';
+---
+
+<Base title="Page not found | MetricMine" path="/404">
+  <section class="nf">
+    <div class="container nf-inner">
+      <img
+        class="symbol-light"
+        src={symbolLight.src}
+        width="1024"
+        height="1024"
+        alt=""
+      />
+      <img
+        class="symbol-dark"
+        src={symbolDark.src}
+        width="1024"
+        height="1024"
+        alt=""
+      />
+      <p class="mono-note">404 · nothing at this key</p>
+      <h1>Page not found.</h1>
+      <a class="btn btn-primary" href="/">Back to metricmine.ai</a>
+    </div>
+  </section>
+
+  <style>
+    .nf {
+      padding-block: 110px;
+    }
+
+    .nf-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 14px;
+    }
+
+    .nf-inner img {
+      width: 96px;
+      height: auto;
+    }
+
+    .symbol-dark {
+      display: none;
+    }
+
+    :global([data-theme='dark']) .symbol-dark {
+      display: block;
+    }
+
+    :global([data-theme='dark']) .symbol-light {
+      display: none;
+    }
+  </style>
+</Base>
