@@ -1,0 +1,318 @@
+/* MetricMine design tokens and base styles.
+   Normative source: brand/BRAND_STANDARDS.md (Rev 2).
+   Sections 3.7 (theme tokens), 4.3 (type scale), 7 (style vocabulary).
+   Do not invent values. Every color here traces to the spec. */
+
+/* ---------- tokens: light (default, B-02) ---------- */
+:root {
+  /* spec 3.7 verbatim */
+  --mm-bg: #FFFFFF;
+  --mm-bg-raised: #F8F9F9;
+  --mm-bg-inset: #F0F2F2;
+  --mm-text: #04041C;
+  --mm-text-2: #536165;
+  --mm-emph: #25444C;
+  --mm-link: #3E7A68;
+  --mm-accent: #5CAC94;
+  --mm-border: #DDE2E3;
+  --mm-code-bg: #F8F9F9;
+  --mm-focus: #4C957F;
+
+  /* extended ramp, spec 3.2 / 3.3 */
+  --mm-green-100: #DDEEE9;
+  --mm-green-200: #BBDDD3;
+  --mm-green-400: #78BAA6;
+  --mm-green-600: #4C957F;
+  --mm-green-700: #3E7A68;
+  --mm-green-800: #305F51;
+  --mm-mint: #B4DACC;
+  --mm-slate: #25444C;
+  --mm-slate-mid: #38626D;
+  --mm-gray-300: #C1CACD;
+  --mm-gray-600: #536165;
+
+  /* medallion accents, spec 3.5 */
+  --mm-bronze: #B0805B;
+  --mm-silver: #AEB6BC;
+  --mm-gold: #D9A441;
+
+  /* derived, theme-aware roles */
+  --mm-eyebrow: var(--mm-green-700);
+  --mm-btn-bg: var(--mm-green-700);
+  --mm-btn-text: #FFFFFF;
+  --mm-btn2-border: var(--mm-text);
+  --mm-hero-wash: radial-gradient(120% 90% at 50% 0%, #EEF6F4 0%, #FFFFFF 70%);
+  --mm-card-bg: #FFFFFF;
+  --mm-arrow: var(--mm-slate-mid);
+  --mm-node-code: var(--mm-bg-inset);
+  --mm-node-agent: var(--mm-mint);
+  --mm-node-answer: var(--mm-green-100);
+  --mm-node-answer-text: var(--mm-text);
+  --mm-mono-sub: var(--mm-gray-600);
+}
+
+/* ---------- tokens: dark (spec 3.7, toggle + prefers-color-scheme) ---------- */
+[data-theme='dark'] {
+  --mm-bg: #04041C;
+  --mm-bg-raised: #0B1226;
+  --mm-bg-inset: #121A33;
+  --mm-text: #FFFFFF;
+  --mm-text-2: #C1CACD;
+  --mm-emph: #B4DACC;
+  --mm-link: #78BAA6;
+  --mm-accent: #5CAC94;
+  --mm-border: #26304A;
+  --mm-code-bg: #0B1226;
+  --mm-focus: #78BAA6;
+
+  --mm-eyebrow: var(--mm-mint);
+  --mm-btn-bg: var(--mm-accent);
+  --mm-btn-text: #04041C;
+  --mm-btn2-border: #FFFFFF;
+  --mm-hero-wash: linear-gradient(180deg, #04041C 0%, #0B1226 100%);
+  --mm-card-bg: #0B1226;
+  --mm-arrow: var(--mm-green-400);
+  --mm-node-code: #121A33;
+  --mm-node-agent: var(--mm-mint);
+  --mm-node-answer: var(--mm-green-800);
+  --mm-node-answer-text: #FFFFFF;
+  --mm-mono-sub: var(--mm-gray-300);
+}
+
+/* No-JS fallback only: the head script always sets data-theme when JS runs. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --mm-bg: #04041C;
+    --mm-bg-raised: #0B1226;
+    --mm-bg-inset: #121A33;
+    --mm-text: #FFFFFF;
+    --mm-text-2: #C1CACD;
+    --mm-emph: #B4DACC;
+    --mm-link: #78BAA6;
+    --mm-border: #26304A;
+    --mm-code-bg: #0B1226;
+    --mm-focus: #78BAA6;
+    --mm-eyebrow: #B4DACC;
+    --mm-btn-bg: #5CAC94;
+    --mm-btn-text: #04041C;
+    --mm-btn2-border: #FFFFFF;
+    --mm-hero-wash: linear-gradient(180deg, #04041C 0%, #0B1226 100%);
+    --mm-card-bg: #0B1226;
+    --mm-arrow: #78BAA6;
+    --mm-node-code: #121A33;
+    --mm-node-agent: #B4DACC;
+    --mm-node-answer: #305F51;
+    --mm-node-answer-text: #FFFFFF;
+    --mm-mono-sub: #C1CACD;
+  }
+}
+
+/* ---------- reset and base ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--mm-bg);
+  color: var(--mm-text);
+  font-family: 'Inter', 'Avenir Next', Aptos, Arial, sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+h1,
+h2,
+h3 {
+  font-family: 'Manrope', 'Avenir Next', Aptos, Arial, sans-serif;
+  color: var(--mm-text);
+  line-height: 1.15;
+  margin: 0 0 0.6em;
+}
+
+h1 {
+  font-weight: 800;
+  font-size: 2rem;
+}
+
+h2 {
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+h3 {
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+p {
+  margin: 0 0 1em;
+}
+
+a {
+  color: var(--mm-link);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+code,
+pre {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.9em;
+}
+
+:focus-visible {
+  outline: 3px solid var(--mm-focus);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* ---------- shared components ---------- */
+.container {
+  max-width: 1080px;
+  margin-inline: auto;
+  padding-inline: 24px;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--mm-bg);
+  color: var(--mm-link);
+  padding: 10px 16px;
+  z-index: 100;
+}
+
+.skip-link:focus-visible {
+  left: 16px;
+  top: 12px;
+}
+
+/* Eyebrow: the signature section label, spec 4.3 */
+.eyebrow {
+  font-family: 'Manrope', 'Avenir Next', Aptos, Arial, sans-serif;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--mm-eyebrow);
+  margin: 0 0 12px;
+}
+
+.display {
+  font-family: 'Manrope', 'Avenir Next', Aptos, Arial, sans-serif;
+  font-weight: 800;
+  font-size: clamp(2.25rem, 5vw, 3.5rem);
+  line-height: 1.1;
+  margin: 0 0 20px;
+}
+
+.lede {
+  font-size: 1.125rem;
+  color: var(--mm-text-2);
+  max-width: 46ch;
+}
+
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.btn {
+  display: inline-block;
+  font-family: 'Manrope', 'Avenir Next', Aptos, Arial, sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1;
+  text-decoration: none;
+  padding: 14px 22px;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  transition: filter 120ms ease, background-color 120ms ease;
+}
+
+.btn-primary {
+  background: var(--mm-btn-bg);
+  color: var(--mm-btn-text);
+}
+
+.btn-primary:hover {
+  filter: brightness(1.08);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--mm-text);
+  border-color: var(--mm-btn2-border);
+}
+
+.btn-secondary:hover {
+  background: var(--mm-bg-raised);
+}
+
+/* Outline chip, spec 7.4.4 */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--mm-gray-300);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.8125rem;
+  color: var(--mm-text);
+  text-decoration: none;
+}
+
+[data-theme='dark'] .chip {
+  border-color: var(--mm-border);
+}
+
+.chip:hover {
+  background: var(--mm-bg-raised);
+}
+
+section {
+  padding-block: 72px;
+}
+
+.section-head {
+  max-width: 640px;
+}
+
+.mono-note {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.8125rem;
+  color: var(--mm-mono-sub);
+}
