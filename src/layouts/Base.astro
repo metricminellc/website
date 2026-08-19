@@ -1,0 +1,341 @@
+---
+// Base layout: head, header, footer. Content slots in between.
+// Brand rules: brand/BRAND_STANDARDS.md governs every value here.
+import '../styles/tokens.css';
+import {
+  SITE_URL,
+  SITE_TITLE,
+  SITE_DESCRIPTION,
+  REPO_URL,
+  DOCS_URL,
+  ORG_URL,
+  CONTACT_EMAIL,
+  BUILDER_NAME,
+  BUILDER_URL,
+  CF_BEACON_TOKEN,
+} from '../consts';
+import headerLight from '../../brand/raster/lockup-tagline-ink.png';
+import headerDark from '../../brand/raster/lockup-tagline-white.png';
+
+interface Props {
+  title?: string;
+  description?: string;
+  path?: string;
+}
+
+const {
+  title = SITE_TITLE,
+  description = SITE_DESCRIPTION,
+  path = '/',
+} = Astro.props;
+
+const canonical = new URL(path, SITE_URL).href;
+const ogImage = new URL('/og-card.png', SITE_URL).href;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <!-- favicons: Tier 3 set, generated from the vector masters -->
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
+    <link rel="icon" href="/favicon-16.png" type="image/png" sizes="16x16" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon-180.png" />
+
+    <!-- open graph and twitter card, spec 6.2 -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="MetricMine" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- fonts: spec 4.1 web embed, verbatim -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- theme init: before paint, no flash. Light default (B-02). -->
+    <script is:inline>
+      (function () {
+        var stored = null;
+        try {
+          stored = localStorage.getItem('mm-theme');
+        } catch (e) {}
+        var theme =
+          stored === 'dark' || stored === 'light'
+            ? stored
+            : window.matchMedia('(prefers-color-scheme: dark)').matches
+              ? 'dark'
+              : 'light';
+        document.documentElement.setAttribute('data-theme', theme);
+      })();
+    </script>
+
+    {
+      CF_BEACON_TOKEN && (
+        <script
+          is:inline
+          defer
+          src="https://static.cloudflareinsights.com/beacon.min.js"
+          data-cf-beacon={JSON.stringify({ token: CF_BEACON_TOKEN })}
+        />
+      )
+    }
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="logo-link" href="/" aria-label="MetricMine home">
+          <img
+            class="logo logo-light"
+            src={headerLight.src}
+            width={headerLight.width}
+            height={headerLight.height}
+            alt="MetricMine"
+          />
+          <img
+            class="logo logo-dark"
+            src={headerDark.src}
+            width={headerDark.width}
+            height={headerDark.height}
+            alt="MetricMine"
+          />
+        </a>
+        <nav class="site-nav" aria-label="Site">
+          <a href={REPO_URL}>GitHub</a>
+          <a href={DOCS_URL}>Docs</a>
+          <button
+            id="theme-toggle"
+            class="theme-toggle"
+            type="button"
+            aria-label="Switch color theme"
+          >
+            <svg
+              class="icon-moon"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path>
+            </svg>
+            <svg
+              class="icon-sun"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <circle cx="12" cy="12" r="4"></circle>
+              <path
+                d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"
+              ></path>
+            </svg>
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div class="footer-brand">
+          <img
+            src="/icon-512.png"
+            alt=""
+            width="28"
+            height="28"
+            loading="lazy"
+          />
+          <p>
+            MetricMine is an open source project,{' '}
+            <a href={`${REPO_URL}/blob/main/LICENSE`}>Apache-2.0</a> licensed.
+          </p>
+        </div>
+        <nav class="footer-nav" aria-label="Footer">
+          <a href={REPO_URL}>GitHub</a>
+          <a href={DOCS_URL}>Docs</a>
+          <a href={ORG_URL}>metricminellc</a>
+          <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+        </nav>
+        <p class="footer-credit">
+          Built by <a href={BUILDER_URL}>{BUILDER_NAME}</a>. &copy; 2026
+          MetricMine LLC.
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      const toggle = document.getElementById('theme-toggle');
+      toggle?.addEventListener('click', () => {
+        const root = document.documentElement;
+        const next =
+          root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        try {
+          localStorage.setItem('mm-theme', next);
+        } catch (e) {
+          /* private mode: theme just won't persist */
+        }
+      });
+    </script>
+
+    <style>
+      .site-header {
+        border-bottom: 1px solid var(--mm-border);
+        background: var(--mm-bg);
+      }
+
+      .header-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 68px;
+        gap: 16px;
+      }
+
+      .logo-link {
+        display: inline-flex;
+        align-items: center;
+      }
+
+      /* Both headers carry the tagline lockups, so DATA MINED & REFINED
+         travels with the mark (spec Section 1: the tagline lives in logo
+         art). At 46 px tall these stay above the 220 px minimum width
+         (spec 2.3). */
+      .logo-light {
+        height: 46px;
+        width: auto;
+      }
+
+      .logo-dark {
+        display: none;
+        height: 46px;
+        width: auto;
+      }
+
+      :global([data-theme='dark']) .logo-light {
+        display: none;
+      }
+
+      :global([data-theme='dark']) .logo-dark {
+        display: block;
+      }
+
+      .site-nav {
+        display: flex;
+        align-items: center;
+        gap: 22px;
+      }
+
+      .site-nav a {
+        font-family: 'Manrope', 'Avenir Next', Aptos, Arial, sans-serif;
+        font-weight: 600;
+        font-size: 0.9375rem;
+        color: var(--mm-text);
+        text-decoration: none;
+      }
+
+      .site-nav a:hover {
+        color: var(--mm-link);
+      }
+
+      .theme-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border: 1px solid var(--mm-border);
+        border-radius: 8px;
+        background: transparent;
+        color: var(--mm-text);
+        cursor: pointer;
+      }
+
+      .theme-toggle:hover {
+        background: var(--mm-bg-raised);
+      }
+
+      .icon-sun {
+        display: none;
+      }
+
+      :global([data-theme='dark']) .icon-sun {
+        display: block;
+      }
+
+      :global([data-theme='dark']) .icon-moon {
+        display: none;
+      }
+
+      .site-footer {
+        border-top: 1px solid var(--mm-border);
+        padding-block: 40px;
+        background: var(--mm-bg);
+      }
+
+      .footer-inner {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .footer-brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .footer-brand p {
+        margin: 0;
+        color: var(--mm-text-2);
+        font-size: 0.9375rem;
+      }
+
+      .footer-nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px 22px;
+        font-size: 0.9375rem;
+      }
+
+      .footer-credit {
+        margin: 0;
+        font-size: 0.875rem;
+        color: var(--mm-text-2);
+      }
+    </style>
+  </body>
+</html>
