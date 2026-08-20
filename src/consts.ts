@@ -17,4 +17,4 @@ export const BUILDER_URL = 'https://github.com/justinrgoff';
 // Cloudflare Web Analytics beacon token (W-07).
 // Empty string disables the beacon. Filled by its own one-line PR once the
 // site exists in the Cloudflare dashboard. Never commit any other tracker.
-export const CF_BEACON_TOKEN = '';
+export const CF_BEACON_TOKEN = '6bc011dfdf2f442aa8d8d58bc8ad011d';
