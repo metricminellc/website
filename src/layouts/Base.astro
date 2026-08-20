@@ -119,7 +119,44 @@ const ogImage = new URL('/og-card.png', SITE_URL).href;
             alt="MetricMine"
           />
         </a>
-        <nav class="site-nav" aria-label="Site">
+        <button
+          id="menu-toggle"
+          class="menu-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="site-nav"
+          aria-label="Menu"
+        >
+          <svg
+            class="icon-menu"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M3 6h18M3 12h18M3 18h18"></path>
+          </svg>
+          <svg
+            class="icon-close"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M6 6l12 12M18 6L6 18"></path>
+          </svg>
+        </button>
+        <nav class="site-nav" id="site-nav" aria-label="Site">
           <a href={REPO_URL}>GitHub</a>
           <a href={DOCS_URL}>Docs</a>
           <button
@@ -209,6 +246,22 @@ const ogImage = new URL('/og-card.png', SITE_URL).href;
           /* private mode: theme just won't persist */
         }
       });
+
+      const menuToggle = document.getElementById('menu-toggle');
+      const siteNav = document.getElementById('site-nav');
+      menuToggle?.addEventListener('click', () => {
+        const open = menuToggle.getAttribute('aria-expanded') === 'true';
+        menuToggle.setAttribute('aria-expanded', String(!open));
+        siteNav?.toggleAttribute('data-open', !open);
+      });
+      document.addEventListener('keydown', (e) => {
+        if (
+          e.key === 'Escape' &&
+          menuToggle?.getAttribute('aria-expanded') === 'true'
+        ) {
+          menuToggle.click();
+        }
+      });
     </script>
 
     <style>
@@ -228,6 +281,7 @@ const ogImage = new URL('/og-card.png', SITE_URL).href;
       .logo-link {
         display: inline-flex;
         align-items: center;
+        min-width: 0;
       }
 
       /* Both headers carry the tagline lockups, so DATA MINED & REFINED
@@ -235,14 +289,18 @@ const ogImage = new URL('/og-card.png', SITE_URL).href;
          art). At 46 px tall these stay above the 220 px minimum width
          (spec 2.3). */
       .logo-light {
-        height: 46px;
+        height: auto;
         width: auto;
+        max-height: 46px;
+        max-width: 100%;
       }
 
       .logo-dark {
         display: none;
-        height: 46px;
+        height: auto;
         width: auto;
+        max-height: 46px;
+        max-width: 100%;
       }
 
       :global([data-theme='dark']) .logo-light {
@@ -286,6 +344,80 @@ const ogImage = new URL('/og-card.png', SITE_URL).href;
 
       .theme-toggle:hover {
         background: var(--mm-bg-raised);
+      }
+
+      .menu-toggle {
+        display: none;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border: 1px solid var(--mm-border);
+        border-radius: 8px;
+        background: transparent;
+        color: var(--mm-text);
+        cursor: pointer;
+      }
+
+      .menu-toggle:hover {
+        background: var(--mm-bg-raised);
+      }
+
+      .menu-toggle .icon-close {
+        display: none;
+      }
+
+      .menu-toggle[aria-expanded='true'] .icon-close {
+        display: block;
+      }
+
+      .menu-toggle[aria-expanded='true'] .icon-menu {
+        display: none;
+      }
+
+      /* Small screens: the links and theme toggle fold behind a menu
+         button so the tagline lockup keeps its true proportions and
+         stays at or above the 220 px minimum width (spec 2.3). The
+         max-width guards above are the backstop that lets the lockup
+         scale, never squeeze, on the narrowest devices. */
+      @media (max-width: 479.98px) {
+        .site-header {
+          position: relative;
+        }
+
+        .menu-toggle {
+          display: inline-flex;
+        }
+
+        .site-nav {
+          display: none;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          right: 0;
+          z-index: 10;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 4px;
+          padding: 12px 24px 16px;
+          background: var(--mm-bg);
+          border-bottom: 1px solid var(--mm-border);
+        }
+
+        .site-nav[data-open] {
+          display: flex;
+        }
+
+        .site-nav a {
+          display: block;
+          width: 100%;
+          padding: 10px 0;
+          font-size: 1rem;
+        }
+
+        .theme-toggle {
+          margin-top: 6px;
+        }
       }
 
       .icon-sun {
