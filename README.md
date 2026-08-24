@@ -51,5 +51,5 @@ CLAUDE.md carries the binding build, copy, and brand rules.
 Code in this repository is [MIT licensed](LICENSE).
 
 Brand assets are not: everything under `brand/` and the icon files under
-`public/` are all rights reserved, MetricMine LLC. They identify the
+`public/` are all rights reserved, Justin Goff. They identify the
 MetricMine project and may not be reused without permission.
