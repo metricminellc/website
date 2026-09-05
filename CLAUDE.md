@@ -12,6 +12,8 @@ is also the home of the MetricMine brand system. Treat both with care.
   agent-and-engine diagram, the transcript, the page hero, the copy block,
   the cube bullet), tokens and shared furniture in `src/styles/tokens.css`,
   constants and every external URL in `src/consts.ts`.
+- `src/assets/fonts/` holds the three self-hosted OFL faces as latin-subset
+  variable woff2 files with their license texts (W-12).
 - `brand/` is the brand system of record. `brand/BRAND_STANDARDS.md` is the
   single maintained copy of the normative spec.
 - `docs/` holds the decision register (W-series), the site spec
@@ -23,8 +25,11 @@ is also the home of the MetricMine brand system. Treat both with care.
 
 - The normative spec is brand/BRAND_STANDARDS.md. Follow it for all color,
   type, spacing, and copy decisions.
-- Fonts: Manrope (headings), Inter (body), JetBrains Mono (code). Theme
-  tokens are in spec Section 3.7; use the CSS custom properties as written.
+- Fonts: Manrope (headings), Inter (body), JetBrains Mono (code),
+  self-hosted per spec Section 4.1 (Rev 3) through Astro's Fonts API in
+  astro.config.mjs; pages reference them only through the `--font-*`
+  variables. Theme tokens are in spec Section 3.7; use the CSS custom
+  properties as written.
 - Copy rules: short declarative sentences, no em dashes, no performance or
   service-level claims. Thesis line: "Agents propose. Humans approve."
 - Logos: use files under brand/ only. Never recolor, rebuild, or normalize
@@ -41,19 +46,18 @@ is also the home of the MetricMine brand system. Treat both with care.
 - Static output only. No SSR, no client frameworks, no CMS.
 - Deploy is GitHub Actions with withastro/action@v6 to GitHub Pages. In
   astro.config.mjs, site is https://metricmine.ai and base is never set.
-- Allowed external requests, complete list: the Google Fonts embed (spec
-  4.1), the Cloudflare Web Analytics beacon (token in src/consts.ts), and
-  one unauthenticated GitHub API call for the live star count. Nothing else,
-  ever. No other trackers, CDNs, or embeds. (The embed leaves with W-12.)
+- Allowed external requests, complete list: the Cloudflare Web Analytics
+  beacon (token in src/consts.ts) and one unauthenticated GitHub API call
+  for the live star count, made after the load event. Nothing else, ever.
+  No third-party fonts, trackers, CDNs, or embeds.
 - The pages are the ones docs/SITE.md maps; until the W2 ladder closes, a
   listed page may still be in the ladder rather than on main. A new page or
   a new section starts as a spec PR that amends docs/SITE.md before its
   implementation PR. A new page also lands in `PAGES` in src/consts.ts and
   in public/sitemap.xml.
 - Characters: only those the latin font subsets carry (ASCII, Latin-1,
-  general punctuation), so the self-hosted fonts of W-12 need no fallback
-  glyph. Arrows, stars, and symbols are inline SVG, never text.
-  `node scripts/check-glyphs.mjs` enforces it.
+  general punctuation). Arrows, stars, and symbols are inline SVG, never
+  text. `node scripts/check-glyphs.mjs` enforces it.
 
 ## Copy rules, binding
 
