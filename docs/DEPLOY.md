@@ -35,6 +35,17 @@ Pages takeover.
 No wildcard records, ever: GitHub warns they enable subdomain takeover even
 on a verified domain.
 
+## metricmine.io (W-16)
+
+metricmine.io and www.metricmine.io forward permanently (301) to
+https://metricmine.ai through the registrar's domain forwarding. No code
+and no record in this repository; the forward is checked with:
+
+```bash
+curl -sI http://metricmine.io | head -n 3
+curl -sI https://www.metricmine.io | head -n 3
+```
+
 ## HTTPS
 
 Enforce HTTPS in Pages settings once the Let's Encrypt certificate
