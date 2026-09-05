@@ -8,6 +8,7 @@ import symbolDark from '../../brand/favicons/symbol-dark_1024.png';
 const quickstart = [
   'git clone https://github.com/metricminellc/metricmine.git && cd metricmine',
   'uv sync',
+  'make demo-fetch',
   `uv run python -c "from metricmine.query import GoldWarehouse; print(GoldWarehouse().list_fact_categories())"`,
 ].join('\n');
 ---
