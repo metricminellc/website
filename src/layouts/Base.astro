@@ -2,6 +2,7 @@
 // Base layout: head, header, footer. Content slots in between.
 // Brand rules: brand/BRAND_STANDARDS.md governs every value here.
 import '../styles/tokens.css';
+import { Font } from 'astro:assets';
 import {
   SITE_URL,
   SITE_TITLE,
@@ -62,13 +63,11 @@ const ogImage = new URL('/og-card.png', SITE_URL).href;
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
 
-    <!-- fonts: spec 4.1 web embed, verbatim -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
-      rel="stylesheet"
-    />
+    <!-- fonts: self-hosted per spec 4.1 (Rev 3) and W-12. Astro emits the
+         @font-face rules and the preload links; no third-party request. -->
+    <Font cssVariable="--font-manrope" preload />
+    <Font cssVariable="--font-inter" preload />
+    <Font cssVariable="--font-jetbrains-mono" />
 
     <!-- theme init: before paint, no flash. Light default (B-02). -->
     <script is:inline>
@@ -318,7 +317,7 @@ const ogImage = new URL('/og-card.png', SITE_URL).href;
       }
 
       .site-nav a {
-        font-family: 'Manrope', 'Avenir Next', Aptos, Arial, sans-serif;
+        font-family: var(--font-manrope);
         font-weight: 600;
         font-size: 0.9375rem;
         color: var(--mm-text);
