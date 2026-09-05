@@ -20,7 +20,7 @@ const sources = [
   'invoices',
 ];
 const chipX = 14;
-const chipW = 118;
+const chipW = 134;
 const chipH = 26;
 const firstY = 56;
 const gapY = 42;
@@ -33,7 +33,7 @@ const wireTo = (cy: number) =>
 
 <svg
   class="hero-visual"
-  viewBox="0 0 580 420"
+  viewBox="8 6 574 378"
   role="img"
   aria-label="The demo's seven public sources flow into MetricMine and come out as one answer that carries its data and its expert context. A dashed slot under the sources marks the same path for sources of your own."
 >
@@ -97,26 +97,26 @@ const wireTo = (cy: number) =>
     width="144"
     height="144"
   />
-  <text class="caption center" x="308" y="316">one star, three categories</text>
+  <text class="caption center" x="308" y="338">one star, three categories</text>
 
   <!-- the answer -->
-  <path class="wire out" d="M 380 214 L 402 214" />
-  <path class="head" d="M 400 208 L 410 214 L 400 220 Z" />
-  <rect class="card-bg" x="410" y="104" width="160" height="220" rx="12" />
+  <path class="wire out" d="M 380 214 L 390 214" />
+  <path class="head" d="M 388 208 L 398 214 L 388 220 Z" />
+  <rect class="card-bg" x="398" y="104" width="180" height="220" rx="12" />
   <g class="mono">
-    <text class="label" x="426" y="130">demo answer</text>
+    <text class="label" x="414" y="130">demo answer</text>
   </g>
-  <text class="q" x="426" y="152">
-    <tspan x="426" dy="0">Flights in a wet hour</tspan>
-    <tspan x="426" dy="16">against a dry hour</tspan>
+  <text class="q" x="414" y="152">
+    <tspan x="414" dy="0">Flights in a wet hour</tspan>
+    <tspan x="414" dy="18">against a dry hour</tspan>
   </text>
-  <text class="num" x="426" y="200">29.44</text>
-  <text class="unit" x="426" y="216">min late, wet</text>
-  <text class="num" x="426" y="250">12.42</text>
-  <text class="unit" x="426" y="266">min late, dry</text>
-  <line class="rule" x1="426" y1="282" x2="554" y2="282" />
+  <text class="num" x="414" y="200">29.44</text>
+  <text class="unit" x="414" y="216">min late, wet</text>
+  <text class="num" x="414" y="250">12.42</text>
+  <text class="unit" x="414" y="266">min late, dry</text>
+  <line class="rule" x1="414" y1="282" x2="562" y2="282" />
   <g class="mono">
-    <text class="label" x="426" y="304">data + expert context</text>
+    <text class="label" x="414" y="304">data + expert context</text>
   </g>
 </svg>
 
@@ -176,7 +176,7 @@ const wireTo = (cy: number) =>
   }
 
   .chip-text {
-    font-size: 12px;
+    font-size: 14px;
     fill: var(--mm-text);
   }
 
@@ -185,7 +185,7 @@ const wireTo = (cy: number) =>
   }
 
   .caption {
-    font-size: 11px;
+    font-size: 12.5px;
     fill: var(--mm-mono-sub);
   }
 
@@ -200,27 +200,27 @@ const wireTo = (cy: number) =>
   }
 
   .label {
-    font-size: 10.5px;
+    font-size: 12px;
     letter-spacing: 0.02em;
     fill: var(--mm-eyebrow);
   }
 
   .q {
     font-family: var(--font-inter);
-    font-size: 12.5px;
+    font-size: 14px;
     fill: var(--mm-text-2);
   }
 
   .num {
     font-family: var(--font-manrope);
     font-weight: 800;
-    font-size: 26px;
+    font-size: 28px;
     fill: var(--mm-emph);
   }
 
   .unit {
     font-family: var(--font-inter);
-    font-size: 11.5px;
+    font-size: 13px;
     fill: var(--mm-text-2);
   }
 
