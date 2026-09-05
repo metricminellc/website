@@ -15,8 +15,10 @@ import {
   BUILDER_URL,
   CF_BEACON_TOKEN,
 } from '../consts';
-import headerLight from '../../brand/raster/lockup-tagline-ink.png';
-import headerDark from '../../brand/raster/lockup-tagline-white.png';
+import headerLight from '../../brand/web/lockup-horizontal-tagline-ink.svg';
+import headerDark from '../../brand/web/lockup-horizontal-tagline-white.svg';
+import symbolLight from '../../brand/web/symbol-color.svg';
+import symbolDark from '../../brand/web/symbol-dark.svg';
 
 interface Props {
   title?: string;
@@ -208,7 +210,16 @@ const ogImage = new URL('/og-card.png', SITE_URL).href;
       <div class="container footer-inner">
         <div class="footer-brand">
           <img
-            src="/icon-512.png"
+            class="footer-symbol symbol-light"
+            src={symbolLight.src}
+            alt=""
+            width="28"
+            height="28"
+            loading="lazy"
+          />
+          <img
+            class="footer-symbol symbol-dark"
+            src={symbolDark.src}
             alt=""
             width="28"
             height="28"
@@ -286,7 +297,9 @@ const ogImage = new URL('/og-card.png', SITE_URL).href;
       /* Both headers carry the tagline lockups, so DATA MINED & REFINED
          travels with the mark (spec Section 1: the tagline lives in logo
          art). At 46 px tall these stay above the 220 px minimum width
-         (spec 2.3). */
+         (spec 2.3). The files are the Tier 3 web crops of the vector
+         masters (brand/web/, spec 2.1 Rev 3): resolution independent and
+         about 12 KB each. */
       .logo-light {
         height: auto;
         width: auto;
@@ -447,6 +460,23 @@ const ogImage = new URL('/og-card.png', SITE_URL).href;
         display: flex;
         align-items: center;
         gap: 12px;
+      }
+
+      .footer-symbol {
+        width: 28px;
+        height: 28px;
+      }
+
+      .footer-brand .symbol-dark {
+        display: none;
+      }
+
+      :global([data-theme='dark']) .footer-brand .symbol-dark {
+        display: block;
+      }
+
+      :global([data-theme='dark']) .footer-brand .symbol-light {
+        display: none;
       }
 
       .footer-brand p {
