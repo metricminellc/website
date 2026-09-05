@@ -2,8 +2,8 @@
 import Base from '../layouts/Base.astro';
 import FlowDiagram from '../components/FlowDiagram.astro';
 import { REPO_URL, REPO_API, DOCS_URL } from '../consts';
-import symbolLight from '../../brand/favicons/symbol-color_1024.png';
-import symbolDark from '../../brand/favicons/symbol-dark_1024.png';
+import symbolLight from '../../brand/web/symbol-color.svg';
+import symbolDark from '../../brand/web/symbol-dark.svg';
 
 const quickstart = [
   'git clone https://github.com/metricminellc/metricmine.git && cd metricmine',
@@ -35,16 +35,16 @@ const quickstart = [
         <img
           class="symbol-light"
           src={symbolLight.src}
-          width="1024"
-          height="1024"
+          width="280"
+          height="280"
           alt=""
           loading="eager"
         />
         <img
           class="symbol-dark"
           src={symbolDark.src}
-          width="1024"
-          height="1024"
+          width="280"
+          height="280"
           alt=""
           loading="eager"
         />
@@ -194,17 +194,25 @@ const quickstart = [
       }
     });
 
-    // Live star count, verifiable social proof only. Fails silent.
-    fetch(REPO_API)
-      .then((r) => (r.ok ? r.json() : null))
-      .then((data) => {
-        const n = data && data.stargazers_count;
-        if (typeof n === 'number') {
-          document.getElementById('star-text').textContent =
-            `${n} ${n === 1 ? 'star' : 'stars'} on GitHub`;
-        }
-      })
-      .catch(() => {});
+    // Live star count, verifiable social proof only. Fails silent. Runs
+    // after the load event so the one API call never sits in the critical
+    // request chain (W2 finding F-W2-5).
+    const loadStars = () =>
+      fetch(REPO_API)
+        .then((r) => (r.ok ? r.json() : null))
+        .then((data) => {
+          const n = data && data.stargazers_count;
+          if (typeof n === 'number') {
+            document.getElementById('star-text').textContent =
+              `${n} ${n === 1 ? 'star' : 'stars'} on GitHub`;
+          }
+        })
+        .catch(() => {});
+    if (document.readyState === 'complete') {
+      loadStars();
+    } else {
+      window.addEventListener('load', loadStars, { once: true });
+    }
   </script>
 
   <style>
