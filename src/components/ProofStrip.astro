@@ -1,0 +1,70 @@
+---
+// The numbers a test holds. Every tile links to the document or test in
+// the pipeline repository that carries the number. Nothing here is a
+// performance, cost, or scale claim; the measured curves stay in
+// docs/scale.md with their environment, by rule (D-40).
+import { DOC } from '../consts';
+
+const stats = [
+  {
+    n: '7',
+    l: 'public sources, each pinned to a publisher artifact and a raw digest',
+    href: DOC.sources,
+    src: 'docs/sources.md',
+  },
+  {
+    n: '3',
+    l: 'fact categories in one star: flights, airport weather, invoice lines',
+    href: DOC.demo,
+    src: 'docs/demo.md',
+  },
+  {
+    n: '31 / 303',
+    l: 'dbt models and tests in one cold build, every one green',
+    href: DOC.demo,
+    src: 'docs/demo.md, PASS=334',
+  },
+  {
+    n: '22 of 31',
+    l: 'models emitted by the engine from approved contracts, never hand-written',
+    href: DOC.readme,
+    src: 'README.md',
+  },
+  {
+    n: '13',
+    l: 'approved contracts, each carrying who proposed it and who merged it',
+    href: DOC.contracts,
+    src: 'contracts/',
+  },
+  {
+    n: '41',
+    l: 'binding decisions in a versioned register, with 53 measured findings beside them',
+    href: DOC.register,
+    src: 'docs/decisions/',
+  },
+  {
+    n: '0.9994',
+    l: 'measured completeness of the cross-category join, floor 0.99, held by a test',
+    href: DOC.testDeclaredJoins,
+    src: 'tests/test_declared_joins.py',
+  },
+  {
+    n: 'under 15 min',
+    l: 'to add a source that is not in the demo, eight files by hand, in a fresh clone',
+    href: DOC.addingASource,
+    src: 'docs/adding-a-source.md',
+  },
+];
+---
+
+<div class="stats">
+  {
+    stats.map((s) => (
+      <a class="stat" href={s.href}>
+        <span class="n">{s.n}</span>
+        <span class="l">{s.l}</span>
+        <span class="src">{s.src}</span>
+      </a>
+    ))
+  }
+</div>
