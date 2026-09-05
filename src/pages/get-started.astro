@@ -1,0 +1,340 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import CopyBlock from '../components/CopyBlock.astro';
+import Cube from '../components/Cube.astro';
+import { DOC, DOCS_URL, REPO_URL, CHANGELOG_URL } from '../consts';
+
+const title = 'Get started: tutorials and resources | MetricMine';
+const description =
+  'The ten-minute path to a served star, then three learning curves with one document each: what the demo shows, how to run it, and how to take the pattern home to your own data.';
+
+// docs/demo.md, Path A and the first question, verbatim.
+const stepClone = [
+  'git clone https://github.com/metricminellc/metricmine.git',
+  'cd metricmine',
+  'uv sync',
+].join('\n');
+const stepFetch = 'make demo-fetch';
+const stepList = `uv run python -c "from metricmine.query import GoldWarehouse; print(GoldWarehouse().list_fact_categories())"`;
+const stepWire = JSON.stringify(
+  {
+    mcpServers: {
+      'metricmine-gold': {
+        command: '/absolute/path/to/metricmine/.venv/bin/python',
+        args: ['-m', 'metricmine.server'],
+      },
+    },
+  },
+  null,
+  2,
+);
+const stepAsk =
+  'Using the metricmine-gold tools: do flights departing New York in an hour with precipitation at their origin run later than flights in a dry hour, and are they cancelled more often? Say what you joined on and what the context told you.';
+
+// docs/demo.md, Path B, verbatim.
+const pathB = [
+  'export DBT_PROFILES_DIR="$PWD/transform"',
+  'uv run dbt deps --project-dir transform',
+  'make ingest',
+  'uv run dbt build --project-dir transform --target local',
+  'make export-demo',
+  'uv run pytest -q',
+].join('\n');
+---
+
+<Base title={title} description={description} path="/get-started/">
+  <PageHero eyebrow="Get started" title="Ten minutes to a served star. Then three curves, one document each.">
+    macOS or Linux, git, and uv. No API keys, no accounts, no cloud resources.
+    Everything below is keyless by design, and every command is quoted from
+    the repository's own demo guide.
+  </PageHero>
+
+  <section>
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">The ten-minute path</p>
+        <h2>Serve first, rebuild later.</h2>
+        <p>
+          Path A serves the released gold star in about two minutes. Path B
+          replays the whole pipeline from raw data in about eight more. Start
+          with A.
+        </p>
+      </div>
+      <ol class="steps">
+        <li>
+          <div>
+            <h3>Clone and sync.</h3>
+            <p>
+              uv provisions the pinned Python 3.12 and every dependency;
+              nothing else is installed globally.
+            </p>
+            <CopyBlock text={stepClone} id="gs-clone" />
+          </div>
+        </li>
+        <li>
+          <div>
+            <h3>Fetch the released artifact.</h3>
+            <p>
+              Every tagged release ships <code>demo/demo.duckdb</code> as a
+              release asset. The committed digest manifest names the release
+              and pins the asset's sha256, size, and content; the fetch
+              verifies all three.
+            </p>
+            <CopyBlock text={stepFetch} id="gs-fetch" />
+          </div>
+        </li>
+        <li>
+          <div>
+            <h3>List the categories.</h3>
+            <p>
+              Expect three: <code>airport_weather</code> (13,014 rows),{' '}
+              <code>flights</code> (166,158), and <code>invoice_lines</code>{' '}
+              (44,721), each with its typed table, its authored subject, and
+              its registry keys.
+            </p>
+            <CopyBlock text={stepList} id="gs-list" />
+          </div>
+        </li>
+        <li>
+          <div>
+            <h3>Wire it into Claude Desktop.</h3>
+            <p>
+              Merge this into <code>claude_desktop_config.json</code> (on
+              macOS under Application Support/Claude), replace the command
+              path with your absolute clone path, quit Claude Desktop fully,
+              and reopen it. A new chat lists <code>metricmine-gold</code> with
+              five tools.
+            </p>
+            <CopyBlock text={stepWire} id="gs-wire" />
+          </div>
+        </li>
+        <li>
+          <div>
+            <h3>Ask the first question.</h3>
+            <p>
+              The answer should land on 29.44 minutes against 12.42, with 8.95
+              percent cancelled against 2.41, joined on the conformed airport
+              code and the conformed calendar hour. The other six questions,
+              with their measured answers, are on <a href="/demo/">the demo page</a>.
+            </p>
+            <CopyBlock text={stepAsk} id="gs-ask" wrap />
+          </div>
+        </li>
+      </ol>
+      <div class="callout">
+        <p>
+          Something off? <code>make doctor</code> checks the platform, uv, the
+          locked toolchain, and the demo artifact, and prints the two exports
+          the local dbt lanes need. The troubleshooting table, including the
+          TLS note for python.org Pythons, is in <a href={DOC.demo}>docs/demo.md</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Path B</p>
+        <h2>Replay the whole pipeline, keyless.</h2>
+        <p>
+          Every source is a committed sample pinned to its publisher's commit
+          and digest, so the full path needs no key either. Steps one to three
+          also run as one command, <code>make demo</code>. From the repo root:
+        </p>
+      </div>
+      <CopyBlock text={pathB} id="gs-path-b" />
+      <p class="prose">
+        What to expect: <code>make ingest</code> lands 247,555 bronze rows
+        across seven tables exactly as they appear in the committed extracts;{' '}
+        <code>dbt build</code> compiles the 31 contracted models and ends{' '}
+        <code>PASS=334 WARN=0 ERROR=0 SKIP=0</code>; <code>make export-demo</code>{' '}
+        rebuilds the artifact from your freshly built warehouse and verifies it
+        content-equal by query; <code>pytest</code> runs the full suite,
+        including the serving round trip, the declared-join gate, and the demo
+        question set.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Three learning curves</p>
+        <h2>One document each, and they point at each other.</h2>
+        <p>
+          A reader meets three curves at once: what the demo is showing, how
+          to run the thing, and how to take the pattern home. Each has a
+          document written for it.
+        </p>
+      </div>
+      <div class="cards">
+        <article class="card">
+          <Cube />
+          <h3>What the demo shows.</h3>
+          <p>
+            Why these sources; each one from bytes to contract; every join and
+            its justification; conformance and the three keys; the calendar;
+            what the agent sees and where each word came from; the vintage
+            effect as a lesson.
+          </p>
+          <span class="under">
+            <a href={DOC.sourcesExplained}>sources-explained.md</a> ·{' '}
+            <a href={DOC.sources}>sources.md</a> ·{' '}
+            <a href={DOC.demo}>demo.md</a>
+          </span>
+        </article>
+        <article class="card">
+          <Cube />
+          <h3>How to run it.</h3>
+          <p>
+            The planes, what is written against what is generated, the shells
+            and the exports, the daily commands in dependency order, every
+            recurring procedure, every gate with what its failure means, a
+            symptom table, and a glossary.
+          </p>
+          <span class="under">
+            <a href={DOC.operating}>operating.md</a> ·{' '}
+            <a href={DOC.adoption}>adoption.md</a>
+          </span>
+        </article>
+        <article class="card">
+          <Cube />
+          <h3>How to take it home.</h3>
+          <p>
+            The path every source took, step by step with the exact commands,
+            validated by adding a source outside the demo to a fresh clone in
+            under fifteen minutes; and the pattern map from the demo's
+            decisions to situations in your own data.
+          </p>
+          <span class="under">
+            <a href={DOC.addingASource}>adding-a-source.md</a> ·{' '}
+            <a href="/where-it-fits/">the pattern map</a>
+          </span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Working in the repository with Claude Code</p>
+        <h2>Open it in Claude Code and start grounded.</h2>
+        <p>
+          The repository ships its own context layer. A few habits make the
+          most of it.
+        </p>
+      </div>
+      <ul class="cubes wide">
+        <li>
+          <Cube size={18} />
+          <p>
+            <strong>Read before you build.</strong>{' '}
+            <a href={DOC.claudeMd}>CLAUDE.md</a> names the document to read
+            before touching contracts, gold models, the profiler, serving, the
+            agent layer, or a new source. Claude Code reads it on its own; ask
+            it to summarize the rule that applies to your change.
+          </p>
+        </li>
+        <li>
+          <Cube size={18} />
+          <p>
+            <strong>Plan mode for anything multi-file.</strong> The repository's
+            convention is small reviewed pull requests, per-file commits with a
+            why-body, and a sign-off on every commit.
+          </p>
+        </li>
+        <li>
+          <Cube size={18} />
+          <p>
+            <strong>Ask Oscar.</strong> The repository's resident guide is a
+            read-only subagent (<a href={DOC.oscar}>.claude/agents/oscar.md</a>).
+            Ask it how the system works, where a task is done, what a rule
+            means, how to keep silver clean, or how the proposers draft
+            contracts, and it answers from the repository's own files, citing
+            the file and the line. Ask for a contract review and it runs the{' '}
+            <a href={DOC.reviewSkill}>contract-review checklist</a> over the
+            file or the diff, prints a table with a verdict, and never edits.
+            A relaxation without its gate is refused, not fixed.
+          </p>
+        </li>
+        <li>
+          <Cube size={18} />
+          <p>
+            <strong>Let the guard say no.</strong> The{' '}
+            <a href={DOC.guardHook}>working-tree guard</a> denies any path
+            outside the repository before a tool runs. Stage external inputs
+            into the tree first; that is the rule it enforces.
+          </p>
+        </li>
+        <li>
+          <Cube size={18} />
+          <p>
+            <strong>Keep the key out of the coding shell.</strong> The proposer
+            stances and the eval lane read <code>ANTHROPIC_API_KEY</code>{' '}
+            from the environment; everything else, including anything a coding
+            agent runs, works in a shell without it. <code>make demo</code>,
+            the tests, and CI never need a key.
+          </p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">The deeper shelf</p>
+        <h2>Where the reasoning lives.</h2>
+      </div>
+      <div class="table-wrap">
+        <table class="data">
+          <thead>
+            <tr>
+              <th>If you want</th>
+              <th>Read</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Every architectural decision, versioned</td><td><a href={DOC.register}>docs/decisions/decision-register.md</a></td></tr>
+            <tr><td>The layer specs, ingestion through serving</td><td><a href={DOC.specs}>docs/spec/</a></td></tr>
+            <tr><td>The evidence: findings, the signature test, gate breaks</td><td><a href={DOC.findings}>gate_proof_findings.md</a> · <a href={DOC.signatureTest}>signature-test.md</a> · <a href={DOC.evidence}>evidence/</a></td></tr>
+            <tr><td>The diagrams, SVG with Mermaid twins</td><td><a href={DOC.diagrams}>docs/diagrams/</a></td></tr>
+            <tr><td>The guardrails the coding agent works under</td><td><a href={DOC.claudeMd}>CLAUDE.md</a></td></tr>
+            <tr><td>How to contribute, and what a pull request needs</td><td><a href={DOC.contributing}>CONTRIBUTING.md</a></td></tr>
+            <tr><td>What changed since the last release</td><td><a href={CHANGELOG_URL}>CHANGELOG.md</a></td></tr>
+            <tr><td>The whole map of the documentation</td><td><a href={DOCS_URL}>docs/README.md</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="container">
+      <p class="eyebrow">Next</p>
+      <h2>Everything above is in one repository.</h2>
+      <div class="btn-row">
+        <a class="btn btn-primary" href={REPO_URL}>View on GitHub</a>
+        <a class="btn btn-secondary" href={DOCS_URL}>Read the docs</a>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .band {
+      background: var(--mm-bg-raised);
+      border-block: 1px solid var(--mm-border);
+    }
+
+    .steps .cmd {
+      margin-top: 12px;
+    }
+
+    .wide li {
+      max-width: 72ch;
+    }
+  </style>
+</Base>

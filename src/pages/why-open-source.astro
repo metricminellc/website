@@ -1,0 +1,157 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Cube from '../components/Cube.astro';
+import { DOC, LICENSE_URL, REPO_URL } from '../consts';
+
+const title = 'Why open source | MetricMine';
+const description =
+  'MetricMine is Apache-2.0 because the method is the proof: agents propose, a person approves, and the approval is a pull request anyone can read. No pricing, no hosted tier, no exceptions but the name and the logo.';
+---
+
+<Base title={title} description={description} path="/why-open-source/">
+  <PageHero eyebrow="Why open source" title="The method is the proof, and proof needs readers.">
+    Every claim on this site points at a file in a public repository. That is
+    not a distribution choice made after the fact. It is the reason the
+    project can say what it says.
+  </PageHero>
+
+  <section>
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Four reasons</p>
+        <h2>Why the code is open.</h2>
+      </div>
+      <div class="cards two">
+        <article class="card">
+          <Cube />
+          <h3>The approval is a pull request.</h3>
+          <p>
+            Agents propose, humans approve, and the approval is a merged pull
+            request with a named person on it. That sentence only means
+            something if anyone can read the pull requests, the register that
+            explains them, and the findings that measured them. They can, all
+            of it, from the first commit.
+          </p>
+        </article>
+        <article class="card">
+          <Cube />
+          <h3>Reproducibility needs strangers.</h3>
+          <p>
+            A clone of main at any tag gets a working demo: <code>make doctor</code>,
+            then <code>make demo</code>, keyless. Two machines that pull the same
+            commit build the same gold, and the demo digest matched across a
+            Linux sandbox and a Mac. Those are claims a stranger can falsify,
+            which is what makes them worth making.
+          </p>
+        </article>
+        <article class="card">
+          <Cube />
+          <h3>The parts are open, so the whole is.</h3>
+          <p>
+            ODCS is a Linux Foundation standard. dbt Core, DuckDB, PyAirbyte,
+            and the MCP SDK are open source. A reference implementation of how
+            they fit together would be a strange thing to close.
+          </p>
+        </article>
+        <article class="card">
+          <Cube />
+          <h3>Apache-2.0, and nothing behind it.</h3>
+          <p>
+            There is no pricing, no hosted tier, and no service. The demo runs
+            on your machine and the only database artifact the project
+            publishes is the export attached to a release. The stable line
+            changes only through the decision register, and every change is a
+            reviewed pull request.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="container split">
+      <div class="prose">
+        <p class="eyebrow">What open source means here</p>
+        <h2>A stable line, kept honestly.</h2>
+        <p>
+          The stable line began at v1.0.0. The pipeline, the engine, the
+          serving layer, the two proposers, and the gates change only through
+          the decision register; experiments live on branches or under a
+          documented experiments folder and end in written findings; a clone
+          of main at any tag gets a working demo. That promise is written on
+          every release surface and in the coding agent's own instructions.
+        </p>
+        <p>
+          It does not mean a service level. There is no support commitment,
+          no uptime, and no performance figure, and the non-goals that keep it
+          that way are written into the README: multi-tenancy, auth, billing,
+          any UI beyond the read-only demo, streaming, orchestration
+          platforms, autonomous multi-step agents, more than one connector
+          type, and production service levels.
+        </p>
+      </div>
+      <div class="prose">
+        <p class="eyebrow">The one exception</p>
+        <h2>The name and the logo.</h2>
+        <p>
+          The MetricMine name and the MetricMine logo are not covered by the
+          Apache-2.0 license. Forks and derivative works may not use them in a
+          way that suggests endorsement by, or affiliation with, this project.
+          Everything else in the repository is yours to use under the license
+          in <a href={LICENSE_URL}>LICENSE</a>, with the provenance statement
+          in <a href={DOC.notice}>NOTICE</a> beside it.
+        </p>
+        <p>
+          The website and the brand system live in{' '}
+          <a href={DOC.websiteRepo}>their own repository</a>: MIT for the
+          site's code, all rights reserved for the brand assets, and the
+          normative <a href={DOC.brandStandards}>brand standard</a> beside
+          them.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="prose">
+        <p class="eyebrow">Taking part</p>
+        <h2>Small reviewed pull requests, contracts never weakened.</h2>
+        <p>
+          Contributions are welcome under the conventions in{' '}
+          <a href={DOC.contributing}>CONTRIBUTING.md</a>: small reviewed pull
+          requests, a contract never weakened to pass a gate, a version bump on
+          every contract change, and a sign-off on every commit, which the DCO
+          check enforces. Everyone taking part follows the{' '}
+          <a href={DOC.conduct}>code of conduct</a>. Vulnerabilities go through{' '}
+          <a href={DOC.security}>SECURITY.md</a>, never a public issue.
+        </p>
+        <p>
+          The issue forms know the project's shapes: a bug, a contract change,
+          and a finding. A finding is the project's favorite kind of issue,
+          because a measurement that contradicts the plan is how the plan
+          improves, and fifty-three of them are on record already.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="container">
+      <p class="eyebrow">Next</p>
+      <h2>Read it, run it, or file a finding.</h2>
+      <div class="btn-row">
+        <a class="btn btn-primary" href={REPO_URL}>View on GitHub</a>
+        <a class="btn btn-secondary" href="/get-started/">Get started</a>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .band {
+      background: var(--mm-bg-raised);
+      border-block: 1px solid var(--mm-border);
+    }
+  </style>
+</Base>

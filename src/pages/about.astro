@@ -1,0 +1,192 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Cube from '../components/Cube.astro';
+import symbolLight from '../../brand/web/symbol-color.svg';
+import symbolDark from '../../brand/web/symbol-dark.svg';
+import {
+  DOC,
+  REPO_URL,
+  ORG_URL,
+  CONTACT_EMAIL,
+  BUILDER_NAME,
+  BUILDER_URL,
+  RELEASE_TAG,
+  RELEASE_URL,
+  CHANGELOG_URL,
+} from '../consts';
+
+const title = 'About | MetricMine';
+const description =
+  'About MetricMine: a contract-driven data pipeline built in the open as a reference implementation, its origin, its name and mark, its decision register, and how to reach the project.';
+---
+
+<Base title={title} description={description} path="/about/">
+  <PageHero eyebrow="About" title="A reference implementation, kept honest in public.">
+    MetricMine is a contract-driven medallion pipeline that runs end to end
+    on one machine, built in the open so that every claim it makes can be
+    checked by someone who has never talked to its author.
+  </PageHero>
+
+  <section>
+    <div class="container split">
+      <div class="prose">
+        <p class="eyebrow">The project</p>
+        <h2>What it is, in one paragraph.</h2>
+        <p>
+          Raw data lands in bronze exactly as received. A deterministic profiler
+          describes it. Machine-readable ODCS contracts, hand-written or drafted
+          by two narrow AI agents, shape silver and gold behind a human approval
+          gate. An auto-modeling engine emits the entire gold layer from the
+          approved contracts, and a read-only MCP server serves the result with
+          a context registry one join from any payload, so an assistant answers
+          business questions grounded in both the data and the meaning behind
+          it. The current tagged release is{' '}
+          <a href={RELEASE_URL}>{RELEASE_TAG}</a>; the{' '}
+          <a href={CHANGELOG_URL}>changelog</a> records what each release
+          landed.
+        </p>
+        <p class="eyebrow">Origin</p>
+        <h2>2023, then 2026 in the open.</h2>
+        <p>
+          MetricMine began as a private prototype in 2023. The current codebase
+          was rebuilt in the open in 2026 from a written specification, with
+          the clean-room rule recorded in <a href={DOC.notice}>NOTICE</a>: the
+          repository was built fresh from an independent written
+          specification, and no code from the 2023 prototype was read,
+          imported, or adapted.
+        </p>
+      </div>
+      <div class="prose">
+        <p class="eyebrow">The name and the mark</p>
+        <h2>MetricMine. One word, capital M twice.</h2>
+        <div class="mark-row">
+          <img class="symbol-light" src={symbolLight.src} width="72" height="72" alt="The MetricMine symbol: three connected isometric cubes" />
+          <img class="symbol-dark" src={symbolDark.src} width="72" height="72" alt="" />
+          <p>
+            The symbol is three connected cubes. The cubes stand for data
+            modeled as cubes; the connections stand for sources joined into
+            one star, which is what the engine builds.
+          </p>
+        </div>
+        <p>
+          The name and the logo are not covered by the Apache-2.0 license.
+          Forks and derivative works may not use them in a way that suggests
+          endorsement by, or affiliation with, this project. The brand system,
+          with its vector masters and the normative standard, lives in{' '}
+          <a href={DOC.websiteRepo}>the website repository</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">How it is kept</p>
+        <h2>The register is the project's memory.</h2>
+        <p>
+          Every design judgment is a numbered decision in a versioned
+          register, minted by its own documentation pull request before any
+          implementing change lands. Every measurement that contradicted a
+          plan is a numbered finding. The stable line changes only through
+          that machinery.
+        </p>
+      </div>
+      <div class="cards">
+        <article class="card">
+          <Cube />
+          <h3>Forty-one decisions.</h3>
+          <p>
+            D-01 through D-41 with their amendments, each condensed in full
+            operational substance, and a crosswalk to the rule each one became
+            in the coding agent's instructions.
+          </p>
+          <span class="under"><a href={DOC.register}>docs/decisions/decision-register.md</a></span>
+        </article>
+        <article class="card">
+          <Cube />
+          <h3>Fifty-three findings.</h3>
+          <p>
+            F-01 through F-53: toolchain behavior observed live, never
+            inferred, from the first scratch gate proof to the multi-source
+            trial, each one with the evidence it cites.
+          </p>
+          <span class="under"><a href={DOC.findings}>docs/verification/gate_proof_findings.md</a></span>
+        </article>
+        <article class="card">
+          <Cube />
+          <h3>One stability rule.</h3>
+          <p>
+            From v1.0.0, the pipeline, the engine, the serving layer, the two
+            proposers, and the gates change only through the register, and a
+            clone of main at any tag gets a working demo.
+          </p>
+          <span class="under"><a href={DOC.claudeMd}>CLAUDE.md, rule 19</a></span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container split">
+      <div class="prose">
+        <p class="eyebrow">Who</p>
+        <h2>Built by {BUILDER_NAME}.</h2>
+        <p>
+          MetricMine is a personal open source project, built and maintained
+          on its author's own time. The commits, the pull requests, and the
+          register carry the record; the profile is{' '}
+          <a href={BUILDER_URL}>{BUILDER_NAME} on GitHub</a>.
+        </p>
+      </div>
+      <div class="prose">
+        <p class="eyebrow">Contact</p>
+        <h2>One address, one organization.</h2>
+        <p>
+          Questions, findings, and pull requests belong on{' '}
+          <a href={REPO_URL}>the repository</a>. Anything else reaches the
+          project at <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
+          The GitHub organization is <a href={ORG_URL}>metricminellc</a>, a
+          namespace and nothing more.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .band {
+      background: var(--mm-bg-raised);
+      border-block: 1px solid var(--mm-border);
+    }
+
+    .mark-row {
+      display: grid;
+      grid-template-columns: 72px minmax(0, 1fr);
+      gap: 18px;
+      align-items: start;
+      margin-bottom: 8px;
+    }
+
+    .mark-row img {
+      width: 72px;
+      height: 72px;
+    }
+
+    .mark-row p {
+      margin: 0;
+    }
+
+    .symbol-dark {
+      display: none;
+    }
+
+    :global([data-theme='dark']) .symbol-dark {
+      display: block;
+    }
+
+    :global([data-theme='dark']) .symbol-light {
+      display: none;
+    }
+  </style>
+</Base>
