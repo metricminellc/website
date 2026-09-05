@@ -1,0 +1,189 @@
+---
+// A rendered conversation, not a screenshot. The question is the one
+// docs/demo.md tells a reader to ask first; the numbers are the measured
+// Q2 answer in tests/fixtures/serving_questions.json, proven through the
+// serving path by tests/test_serving_questions.py; the context lines quote
+// what the fixture says the answer leans on. No product UI, no account.
+import { DOC } from '../consts';
+---
+
+<div class="transcript" role="group" aria-label="A rendered example of the demo answering a cross-source question">
+  <div class="msg user">
+    <span class="who">you</span>
+    <div class="body">
+      <p>
+        Using the metricmine-gold tools: do flights departing New York in an
+        hour with precipitation at their origin run later than flights in a
+        dry hour, and are they cancelled more often? Say what you joined on
+        and what the context told you.
+      </p>
+    </div>
+  </div>
+  <div class="msg tools">
+    <span class="who">tools</span>
+    <div class="body">
+      <ol class="calls">
+        <li><code>list_fact_categories</code> <span>three categories, their typed marts, their registry keys</span></li>
+        <li><code>get_context</code> <span>flights</span></li>
+        <li><code>get_context</code> <span>airport_weather</span></li>
+        <li><code>query</code> <span>one SELECT over the two typed marts</span></li>
+      </ol>
+    </div>
+  </div>
+  <div class="msg assistant">
+    <span class="who">answer</span>
+    <div class="body">
+      <p>
+        Yes on both counts. In hours with precipitation at the origin, flights
+        left <strong>29.44 minutes</strong> late on average, and <strong>8.95 percent</strong> were
+        cancelled (13,492 flights). In dry hours, <strong>12.42 minutes</strong> and <strong>2.41 percent</strong> (152,569
+        flights).
+      </p>
+      <p>
+        What I joined on: the conformed airport code and the conformed calendar
+        hour, the cross-category join the registry declares. What the context
+        told me: that join's measured completeness is 0.9994, so 97 flights fall
+        outside it; and departure delay is null exactly when a flight is
+        cancelled, so the averages exclude cancellations by construction and the
+        cancellation rate comes from the flag.
+      </p>
+    </div>
+  </div>
+  <dl class="ledger">
+    <div>
+      <dt>data</dt>
+      <dd>the two typed marts, joined as declared</dd>
+    </div>
+    <div>
+      <dt>expert context</dt>
+      <dd>the declared join and its completeness; the null rule on departure delay</dd>
+    </div>
+  </dl>
+  <p class="foot">
+    Rendered from the measured answer in{' '}
+    <a href={DOC.questions}>serving_questions.json</a> (Q2), held by{' '}
+    <a href={DOC.testServingQuestions}>test_serving_questions.py</a>. Not a
+    screenshot.
+  </p>
+</div>
+
+<style>
+  .transcript {
+    background: var(--mm-card-bg);
+    border: 1px solid var(--mm-border);
+    border-radius: 12px;
+    padding: 20px 22px 16px;
+  }
+
+  .msg {
+    display: grid;
+    grid-template-columns: 76px minmax(0, 1fr);
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--mm-border);
+  }
+
+  .msg:first-child {
+    padding-top: 0;
+  }
+
+  .who {
+    font-family: var(--font-jetbrains-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--mm-eyebrow);
+    padding-top: 3px;
+  }
+
+  .body {
+    min-width: 0;
+  }
+
+  .msg p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.55;
+  }
+
+  .msg p + p {
+    margin-top: 10px;
+  }
+
+  .msg.user p {
+    color: var(--mm-text-2);
+  }
+
+  .msg strong {
+    color: var(--mm-emph);
+    font-weight: 600;
+  }
+
+  .calls {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-jetbrains-mono);
+    font-size: 0.8rem;
+    line-height: 1.7;
+  }
+
+  .calls code {
+    color: var(--mm-text);
+    background: var(--mm-code-bg);
+    border: 1px solid var(--mm-border);
+    border-radius: 4px;
+    padding: 0 5px;
+  }
+
+  .calls span {
+    color: var(--mm-mono-sub);
+  }
+
+  .ledger {
+    margin: 12px 0 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .ledger div {
+    background: var(--mm-bg-raised);
+    border: 1px solid var(--mm-border);
+    border-radius: 8px;
+    padding: 10px 12px;
+  }
+
+  .ledger dt {
+    font-family: var(--font-jetbrains-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--mm-eyebrow);
+    margin-bottom: 4px;
+  }
+
+  .ledger dd {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--mm-text-2);
+  }
+
+  .foot {
+    margin: 14px 0 0;
+    font-family: var(--font-jetbrains-mono);
+    font-size: 0.75rem;
+    color: var(--mm-mono-sub);
+  }
+
+  @media (max-width: 600px) {
+    .msg {
+      grid-template-columns: 1fr;
+      gap: 4px;
+    }
+
+    .ledger {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
