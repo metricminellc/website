@@ -1,0 +1,252 @@
+---
+// How the agent layer and the engine meet: agents propose along the top,
+// a person's merge into contracts/ is the only bridge, and the engine
+// executes along the bottom. One geometry, two token sets (spec 6.4):
+// fills and strokes are theme tokens; medallion and agent fills trace to
+// spec 3.5 and 3.1. The facts drawn here are the README's: two narrow
+// agents that hold no warehouse credential and never write, an engine that
+// emits dbt model files and never DDL, gates at error severity, a star of
+// three categories, and a read-only MCP server with five tools.
+const top = [
+  { x: 20, w: 150, t: 'Bronze profile', s: 'committed, hashed', kind: 'code' },
+  { x: 195, w: 175, t: 'Proposer agent', s: 'one structured API call', kind: 'agent' },
+  { x: 395, w: 175, t: 'Draft contract', s: 'the outbox, nothing else', kind: 'code' },
+  { x: 595, w: 210, t: 'A person reviews', s: 'pull request, or it never lands', kind: 'gate' },
+];
+const bottom = [
+  { x: 640, w: 145, t: 'Engine', s: 'emits dbt models', kind: 'code' },
+  { x: 490, w: 125, t: 'dbt build', s: 'gates at error', kind: 'silver' },
+  { x: 330, w: 135, t: 'The star', s: 'three categories', kind: 'gold' },
+  { x: 160, w: 145, t: 'MCP server', s: 'read-only, 5 tools', kind: 'code' },
+  { x: 20, w: 115, t: 'Answer', s: 'data + context', kind: 'answer' },
+];
+const yTop = 60;
+const yBottom = 280;
+const h = 60;
+---
+
+<svg
+  class="aed"
+  viewBox="0 0 1100 400"
+  role="img"
+  aria-label="Along the top, a bronze profile goes to a proposer agent, which writes a draft contract that a person reviews in a pull request. The approved contract lands in contracts/ in git, the only bridge. Along the bottom, the engine emits dbt models from the contracts, dbt builds them under gates, the star holds three categories, and a read-only MCP server answers with data and context. A dashed line between the lanes says no agent holds a warehouse credential."
+>
+  <text class="lane" x="20" y="36">THE AGENT LAYER PROPOSES</text>
+  <text class="lane" x="20" y="256">THE ENGINE EXECUTES</text>
+
+  <!-- top lane -->
+  {
+    top.map((n, i) => (
+      <>
+        <rect class={`node ${n.kind}`} x={n.x} y={yTop} width={n.w} height={h} rx="12" />
+        <text class={`t ${n.kind}`} x={n.x + 14} y={yTop + 26}>
+          {n.t}
+        </text>
+        <text class={`s ${n.kind}`} x={n.x + 14} y={yTop + 45}>
+          {n.s}
+        </text>
+        {i < top.length - 1 && (
+          <path
+            class="arrow"
+            d={`M ${n.x + n.w + 4} ${yTop + h / 2} L ${top[i + 1].x - 12} ${yTop + h / 2}`}
+          />
+        )}
+        {i < top.length - 1 && (
+          <path
+            class="head"
+            d={`M ${top[i + 1].x - 12} ${yTop + h / 2 - 5} L ${top[i + 1].x - 3} ${yTop + h / 2} L ${top[i + 1].x - 12} ${yTop + h / 2 + 5} Z`}
+          />
+        )}
+      </>
+    ))
+  }
+  <!-- into the center -->
+  <path class="arrow" d={`M 809 ${yTop + h / 2} L 828 ${yTop + h / 2}`}></path>
+  <path class="head" d={`M 828 ${yTop + h / 2 - 5} L 837 ${yTop + h / 2} L 828 ${yTop + h / 2 + 5} Z`}></path>
+
+  <!-- the center: contracts in git -->
+  <rect class="node contracts" x="840" y={yTop} width="160" height="280" rx="14"></rect>
+  <text class="t big" x="920" y="150">contracts/</text>
+  <text class="s center" x="920" y="176">ODCS, in git</text>
+  <text class="s center" x="920" y="196">versioned</text>
+  <text class="s center" x="920" y="216">provenance stamped</text>
+  <text class="s center" x="920" y="236">a person merged it</text>
+
+  <!-- out of the center, leftward -->
+  <path class="arrow" d={`M 836 ${yBottom + h / 2} L 802 ${yBottom + h / 2}`}></path>
+  <path class="head" d={`M 802 ${yBottom + h / 2 - 5} L 793 ${yBottom + h / 2} L 802 ${yBottom + h / 2 + 5} Z`}></path>
+
+  <!-- bottom lane, right to left -->
+  {
+    bottom.map((n, i) => (
+      <>
+        <rect class={`node ${n.kind}`} x={n.x} y={yBottom} width={n.w} height={h} rx="12" />
+        <text class={`t ${n.kind}`} x={n.x + 14} y={yBottom + 26}>
+          {n.t}
+        </text>
+        <text class={`s ${n.kind}`} x={n.x + 14} y={yBottom + 45}>
+          {n.s}
+        </text>
+        {i < bottom.length - 1 && (
+          <path
+            class="arrow"
+            d={`M ${n.x - 4} ${yBottom + h / 2} L ${bottom[i + 1].x + bottom[i + 1].w + 12} ${yBottom + h / 2}`}
+          />
+        )}
+        {i < bottom.length - 1 && (
+          <path
+            class="head"
+            d={`M ${bottom[i + 1].x + bottom[i + 1].w + 12} ${yBottom + h / 2 - 5} L ${bottom[i + 1].x + bottom[i + 1].w + 3} ${yBottom + h / 2} L ${bottom[i + 1].x + bottom[i + 1].w + 12} ${yBottom + h / 2 + 5} Z`}
+          />
+        )}
+      </>
+    ))
+  }
+
+  <!-- the boundary -->
+  <line class="boundary" x1="20" y1="186" x2="805" y2="186"></line>
+  <text class="note end" x="805" y="176">no agent holds a warehouse credential; the merge above is the only bridge</text>
+
+  <!-- the profiler reads bronze, read-only -->
+  <path class="dotted" d="M 552 280 C 552 236, 200 232, 95 122"></path>
+  <text class="note" x="562" y="268">the profiler reads bronze, read-only</text>
+
+  <!-- what a person never has to do -->
+  <text class="note" x="20" y="372">Contracts in, model files out. Nothing an agent produces reaches the warehouse unreviewed.</text>
+</svg>
+
+<style>
+  .aed {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .lane {
+    font-family: var(--font-manrope);
+    font-weight: 600;
+    font-size: 11.5px;
+    letter-spacing: 0.14em;
+    fill: var(--mm-eyebrow);
+  }
+
+  .node {
+    stroke-width: 1.5;
+  }
+
+  .node.code {
+    fill: var(--mm-node-code);
+    stroke: var(--mm-border);
+  }
+
+  .node.agent {
+    fill: var(--mm-node-agent);
+    stroke: var(--mm-node-agent);
+  }
+
+  .node.gate {
+    fill: transparent;
+    stroke: var(--mm-text);
+    stroke-width: 2;
+  }
+
+  .node.gold {
+    fill: var(--mm-gold);
+    stroke: var(--mm-gold);
+  }
+
+  .node.silver {
+    fill: var(--mm-silver);
+    stroke: var(--mm-silver);
+  }
+
+  .node.answer {
+    fill: var(--mm-node-answer);
+    stroke: var(--mm-node-answer);
+  }
+
+  .node.contracts {
+    fill: var(--mm-callout-bg);
+    stroke: var(--mm-green-700);
+    stroke-width: 2;
+  }
+
+  .t {
+    font-family: var(--font-manrope);
+    font-weight: 700;
+    font-size: 14px;
+    fill: var(--mm-text);
+  }
+
+  .t.big {
+    font-size: 20px;
+    font-weight: 800;
+    text-anchor: middle;
+    fill: var(--mm-emph);
+  }
+
+  .t.agent,
+  .t.gold,
+  .t.silver,
+  .s.agent,
+  .s.gold,
+  .s.silver {
+    fill: #04041c;
+  }
+
+  .s {
+    font-family: var(--font-jetbrains-mono);
+    font-size: 10.5px;
+    fill: var(--mm-mono-sub);
+  }
+
+  .s.center {
+    text-anchor: middle;
+    fill: var(--mm-text-2);
+  }
+
+  .s.answer {
+    fill: var(--mm-node-answer-text);
+  }
+
+  .t.answer {
+    fill: var(--mm-node-answer-text);
+  }
+
+  .arrow {
+    stroke: var(--mm-arrow);
+    stroke-width: 1.6;
+    fill: none;
+  }
+
+  .head {
+    fill: var(--mm-arrow);
+  }
+
+  .boundary {
+    stroke: var(--mm-slate-mid);
+    stroke-width: 1.2;
+    stroke-dasharray: 6 5;
+  }
+
+  :global([data-theme='dark']) .boundary {
+    stroke: var(--mm-green-400);
+  }
+
+  .dotted {
+    fill: none;
+    stroke: var(--mm-mono-sub);
+    stroke-width: 1.2;
+    stroke-dasharray: 2 4;
+  }
+
+  .note {
+    font-family: var(--font-jetbrains-mono);
+    font-size: 10.5px;
+    fill: var(--mm-mono-sub);
+  }
+
+  .note.end {
+    text-anchor: end;
+  }
+</style>
