@@ -1,17 +1,22 @@
 # CLAUDE.md · metricminellc/website
 
-This repo is the source for metricmine.ai: a one-page Astro site for the
-MetricMine project, deployed to GitHub Pages at the apex domain. It is also
-the home of the MetricMine brand system. Treat both with care.
+This repo is the source for metricmine.ai: a small multi-page Astro site
+for the MetricMine project, deployed to GitHub Pages at the apex domain. It
+is also the home of the MetricMine brand system. Treat both with care.
 
 ## What lives where
 
-- `src/` is the site: one page (`src/pages/index.astro`), a 404, one layout,
-  one flow-diagram component, tokens in `src/styles/tokens.css`,
-  constants in `src/consts.ts`.
+- `src/pages/` is the site: the home page and the six pages docs/SITE.md
+  maps, plus a 404. One layout (`src/layouts/Base.astro`), the components
+  under `src/components/` (the flow, the hero visual, the proof strip, the
+  agent-and-engine diagram, the transcript, the page hero, the copy block,
+  the cube bullet), tokens and shared furniture in `src/styles/tokens.css`,
+  constants and every external URL in `src/consts.ts`.
 - `brand/` is the brand system of record. `brand/BRAND_STANDARDS.md` is the
   single maintained copy of the normative spec.
-- `docs/` holds the decision register and deployment notes.
+- `docs/` holds the decision register (W-series), the site spec
+  (`docs/SITE.md`), and deployment notes.
+- `scripts/` holds the glyph gate.
 - `.github/workflows/deploy.yml` ships every merge to main.
 
 ## Brand standards
@@ -20,12 +25,14 @@ the home of the MetricMine brand system. Treat both with care.
   type, spacing, and copy decisions.
 - Fonts: Manrope (headings), Inter (body), JetBrains Mono (code). Theme
   tokens are in spec Section 3.7; use the CSS custom properties as written.
-- Copy rules: short declarative sentences, no em dashes, no throughput or
-  SLA claims. Thesis line: "Agents propose. Humans approve."
+- Copy rules: short declarative sentences, no em dashes, no performance or
+  service-level claims. Thesis line: "Agents propose. Humans approve."
 - Logos: use files under brand/ only. Never recolor, rebuild, or normalize
-  logo art.
-- Published diagrams follow spec Section 6.4: SVG source, paired light and
-  dark, embedded subset fonts.
+  logo art, and never redraw the symbol inside a diagram.
+- Published diagrams follow spec Section 6.4: on the site, inline SVG
+  components whose fills and strokes are theme tokens (one geometry, two
+  token sets); as standalone files, SVG source, paired light and dark,
+  embedded subset fonts.
 
 ## Build rules
 
@@ -37,19 +44,37 @@ the home of the MetricMine brand system. Treat both with care.
 - Allowed external requests, complete list: the Google Fonts embed (spec
   4.1), the Cloudflare Web Analytics beacon (token in src/consts.ts), and
   one unauthenticated GitHub API call for the live star count. Nothing else,
-  ever. No other trackers, CDNs, or embeds.
-- One page until the docs stage opens. New pages or sections start as spec
-  PRs before implementation PRs.
+  ever. No other trackers, CDNs, or embeds. (The embed leaves with W-12.)
+- The pages are the ones docs/SITE.md maps; until the W2 ladder closes, a
+  listed page may still be in the ladder rather than on main. A new page or
+  a new section starts as a spec PR that amends docs/SITE.md before its
+  implementation PR. A new page also lands in `PAGES` in src/consts.ts and
+  in public/sitemap.xml.
+- Characters: only those the latin font subsets carry (ASCII, Latin-1,
+  general punctuation), so the self-hosted fonts of W-12 need no fallback
+  glyph. Arrows, stars, and symbols are inline SVG, never text.
+  `node scripts/check-glyphs.mjs` enforces it.
 
 ## Copy rules, binding
 
 - Positioning: reference implementation, local-first by design. No
-  throughput, SLA, cost, or scale claims anywhere.
+  performance, service-level, cost, or scale claims anywhere, and no figure
+  from the pipeline repository's docs/scale.md.
+- Every number on a page links to the pipeline repository document or
+  test that holds it (docs/SITE.md keeps the table). A third-party figure
+  is cited to its publisher inline and never restated as the project's own.
+- Portability is worded as the pipeline README words it: the contracts and
+  the compiled context are warehouse-agnostic files in git; dbt profiles
+  carry the execution plane; a second adapter is an experiment, not a
+  promise. Other connector types are a standing non-goal, stated as such.
 - Social proof is the live GitHub star count and nothing else. No logos, no
   testimonials, no invented adopters.
 - The site speaks about the project, never about any person's career. No
   hiring, recruiting, resume, or portfolio language on any page or in any
   file in this repo.
+- The site names only what the pipeline repository names (the reviewer,
+  the skill, the guard, the Action, the tools); nothing is introduced here
+  first.
 - Sentence case for UI labels. Buttons name the action.
 - No em dashes anywhere, including code comments and PR descriptions.
 
@@ -62,13 +87,15 @@ the home of the MetricMine brand system. Treat both with care.
   title and a why-body.
 - Breakage never merges. `npm run build` must pass before any PR is opened.
 - Do not edit files under brand/ except through a dedicated brand PR that
-  cites brand/BRAND_STANDARDS.md.
+  cites brand/BRAND_STANDARDS.md. `brand/web/` is regenerated by the
+  script, never hand-edited.
 
 ## Verification before any PR
 
-1. `npm run build` passes clean.
+1. `npm run build` passes clean and lists every page in docs/SITE.md.
 2. Grep gates, all three must return nothing:
-   `grep -rn -e $'—' -e $'–' src/ README.md docs/`
-   `grep -rniE 'portfolio|hiring|recruit|resume|throughput|trusted by' src/ README.md docs/`
-   `grep -rniw 'sla' src/ README.md docs/`
-3. Copy read against the Copy rules above.
+   `grep -rn -e $'—' -e $'–' src/ README.md docs/ scripts/`
+   `grep -rniE 'portfolio|hiring|recruit|resume|throughput|trusted by' src/ README.md docs/ scripts/`
+   `grep -rniw 'sla' src/ README.md docs/ scripts/`
+3. `node scripts/check-glyphs.mjs` prints `glyphs: clean`.
+4. Copy read against the Copy rules above, every added or changed line.
