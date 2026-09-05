@@ -14,6 +14,10 @@ import {
   BUILDER_NAME,
   BUILDER_URL,
   CF_BEACON_TOKEN,
+  CHANGELOG_URL,
+  RELEASES_URL,
+  PAGES,
+  HEADER_PAGES,
 } from '../consts';
 import headerLight from '../../brand/web/lockup-horizontal-tagline-ink.svg';
 import headerDark from '../../brand/web/lockup-horizontal-tagline-white.svg';
@@ -158,8 +162,15 @@ const ogImage = new URL('/og-card.png', SITE_URL).href;
           </svg>
         </button>
         <nav class="site-nav" id="site-nav" aria-label="Site">
-          <a href={REPO_URL}>GitHub</a>
+          {
+            HEADER_PAGES.map((p) => (
+              <a href={p.href} aria-current={path === p.href ? 'page' : undefined}>
+                {p.label}
+              </a>
+            ))
+          }
           <a href={DOCS_URL}>Docs</a>
+          <a href={REPO_URL}>GitHub</a>
           <button
             id="theme-toggle"
             class="theme-toggle"
@@ -230,9 +241,14 @@ const ogImage = new URL('/og-card.png', SITE_URL).href;
             <a href={`${REPO_URL}/blob/main/LICENSE`}>Apache-2.0</a> licensed.
           </p>
         </div>
-        <nav class="footer-nav" aria-label="Footer">
+        <nav class="footer-nav" aria-label="Site pages">
+          {PAGES.map((p) => <a href={p.href}>{p.label}</a>)}
+        </nav>
+        <nav class="footer-nav" aria-label="Project links">
           <a href={REPO_URL}>GitHub</a>
           <a href={DOCS_URL}>Docs</a>
+          <a href={RELEASES_URL}>Releases</a>
+          <a href={CHANGELOG_URL}>Changelog</a>
           <a href={ORG_URL}>metricminellc</a>
           <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
         </nav>
@@ -337,7 +353,8 @@ const ogImage = new URL('/og-card.png', SITE_URL).href;
         text-decoration: none;
       }
 
-      .site-nav a:hover {
+      .site-nav a:hover,
+      .site-nav a[aria-current='page'] {
         color: var(--mm-link);
       }
 
@@ -387,12 +404,13 @@ const ogImage = new URL('/og-card.png', SITE_URL).href;
         display: none;
       }
 
-      /* Small screens: the links and theme toggle fold behind a menu
-         button so the tagline lockup keeps its true proportions and
-         stays at or above the 220 px minimum width (spec 2.3). The
-         max-width guards above are the backstop that lets the lockup
-         scale, never squeeze, on the narrowest devices. */
-      @media (max-width: 479.98px) {
+      /* Small and medium screens: the links and theme toggle fold behind a
+         menu button so the tagline lockup keeps its true proportions and
+         stays at or above the 220 px minimum width (spec 2.3). With six
+         links the fold point sits at 900 px. The max-width guards above
+         are the backstop that lets the lockup scale, never squeeze, on the
+         narrowest devices. */
+      @media (max-width: 899.98px) {
         .site-header {
           position: relative;
         }
