@@ -52,11 +52,10 @@ is also the home of the MetricMine brand system. Treat both with care.
   beacon (token in src/consts.ts) and one unauthenticated GitHub API call
   for the live star count, made after the load event. Nothing else, ever.
   No third-party fonts, trackers, CDNs, or embeds.
-- The pages are the ones docs/SITE.md maps; until the W2 ladder closes, a
-  listed page may still be in the ladder rather than on main. A new page or
-  a new section starts as a spec PR that amends docs/SITE.md before its
-  implementation PR. A new page also lands in `PAGES` in src/consts.ts and
-  in public/sitemap.xml.
+- The pages are the ones docs/SITE.md maps. A new page or a new section
+  starts as a spec PR that amends docs/SITE.md before its implementation
+  PR. A new page also lands in `PAGES` in src/consts.ts and in
+  public/sitemap.xml.
 - Characters: only those the latin font subsets carry (ASCII, Latin-1,
   general punctuation). Arrows, stars, and symbols are inline SVG, never
   text. `node scripts/check-glyphs.mjs` enforces it.
