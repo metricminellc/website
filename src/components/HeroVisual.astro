@@ -1,0 +1,243 @@
+---
+// The hero visual: the demo's seven sources flow into the mark, and an
+// answer flows out. One geometry, two token sets (spec 6.4): every fill and
+// stroke is a theme token, and the symbol is the untouched Tier 3 web crop
+// of the vector master, swapped per theme (spec 2.2). The numbers on the
+// answer card are the measured Q2 answer from
+// tests/fixtures/serving_questions.json in the pipeline repository; the
+// source names are the seven extracts in docs/sources.md. The dashed slot
+// under them says the same path is open to any source of your own.
+import symbolLight from '../../brand/web/symbol-color.svg';
+import symbolDark from '../../brand/web/symbol-dark.svg';
+
+const sources = [
+  'flights',
+  'weather',
+  'carriers',
+  'aircraft',
+  'airports',
+  'runways',
+  'invoices',
+];
+const chipX = 14;
+const chipW = 118;
+const chipH = 26;
+const firstY = 56;
+const gapY = 42;
+const hub = { x: 232, y: 214 };
+const slotY = firstY + sources.length * gapY;
+const slotCy = slotY + chipH / 2;
+const wireTo = (cy: number) =>
+  `M ${chipX + chipW} ${cy} C ${chipX + chipW + 56} ${cy}, ${hub.x - 56} ${hub.y}, ${hub.x} ${hub.y}`;
+---
+
+<svg
+  class="hero-visual"
+  viewBox="0 0 580 420"
+  role="img"
+  aria-label="The demo's seven public sources flow into MetricMine and come out as one answer that carries its data and its expert context. A dashed slot under the sources marks the same path for sources of your own."
+>
+  <!-- source chips -->
+  <g class="mono">
+    <text class="label" x={chipX} y="24">demo sources</text>
+    <text class="caption" x={chipX} y="40">seven public files, pinned</text>
+    {
+      sources.map((name, i) => {
+        const y = firstY + i * gapY;
+        const cy = y + chipH / 2;
+        return (
+          <>
+            <path class="wire" d={wireTo(cy)} />
+            <rect
+              class="chip-bg"
+              x={chipX}
+              y={y}
+              width={chipW}
+              height={chipH}
+              rx="8"
+            />
+            <circle class="dot-bronze" cx={chipX + 14} cy={cy} r="3.5" />
+            <text class="chip-text" x={chipX + 26} y={cy + 4}>
+              {name}
+            </text>
+          </>
+        );
+      })
+    }
+    <!-- the open slot: your own sources take the same path -->
+    <path class="wire slot" d={wireTo(slotCy)} />
+    <rect
+      class="chip-bg slot"
+      x={chipX}
+      y={slotY}
+      width={chipW}
+      height={chipH}
+      rx="8"
+    />
+    <circle class="dot-slot" cx={chipX + 14} cy={slotCy} r="3.5" />
+    <text class="chip-text slot" x={chipX + 26} y={slotCy + 4}>
+      your sources
+    </text>
+  </g>
+
+  <!-- the mark -->
+  <image
+    class="symbol-light"
+    href={symbolLight.src}
+    x="236"
+    y="142"
+    width="144"
+    height="144"
+  />
+  <image
+    class="symbol-dark"
+    href={symbolDark.src}
+    x="236"
+    y="142"
+    width="144"
+    height="144"
+  />
+  <text class="caption center" x="308" y="316">one star, three categories</text>
+
+  <!-- the answer -->
+  <path class="wire out" d="M 380 214 L 402 214" />
+  <path class="head" d="M 400 208 L 410 214 L 400 220 Z" />
+  <rect class="card-bg" x="410" y="104" width="160" height="220" rx="12" />
+  <g class="mono">
+    <text class="label" x="426" y="130">demo answer</text>
+  </g>
+  <text class="q" x="426" y="152">
+    <tspan x="426" dy="0">Flights in a wet hour</tspan>
+    <tspan x="426" dy="16">against a dry hour</tspan>
+  </text>
+  <text class="num" x="426" y="200">29.44</text>
+  <text class="unit" x="426" y="216">min late, wet</text>
+  <text class="num" x="426" y="250">12.42</text>
+  <text class="unit" x="426" y="266">min late, dry</text>
+  <line class="rule" x1="426" y1="282" x2="554" y2="282" />
+  <g class="mono">
+    <text class="label" x="426" y="304">data + expert context</text>
+  </g>
+</svg>
+
+<style>
+  .hero-visual {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .mono,
+  .caption,
+  .label {
+    font-family: var(--font-jetbrains-mono);
+  }
+
+  .wire {
+    fill: none;
+    stroke: var(--mm-arrow);
+    stroke-width: 1.4;
+    opacity: 0.85;
+  }
+
+  .wire.out {
+    stroke-width: 2;
+    opacity: 1;
+  }
+
+  .wire.slot {
+    stroke-dasharray: 3 4;
+    opacity: 0.55;
+  }
+
+  .head {
+    fill: var(--mm-arrow);
+  }
+
+  .chip-bg {
+    fill: var(--mm-card-bg);
+    stroke: var(--mm-border);
+    stroke-width: 1;
+  }
+
+  .chip-bg.slot {
+    fill: none;
+    stroke-dasharray: 3 3;
+  }
+
+  .dot-bronze {
+    fill: var(--mm-bronze);
+  }
+
+  .dot-slot {
+    fill: none;
+    stroke: var(--mm-mono-sub);
+    stroke-width: 1.2;
+  }
+
+  .chip-text {
+    font-size: 12px;
+    fill: var(--mm-text);
+  }
+
+  .chip-text.slot {
+    fill: var(--mm-mono-sub);
+  }
+
+  .caption {
+    font-size: 11px;
+    fill: var(--mm-mono-sub);
+  }
+
+  .caption.center {
+    text-anchor: middle;
+  }
+
+  .card-bg {
+    fill: var(--mm-card-bg);
+    stroke: var(--mm-border);
+    stroke-width: 1;
+  }
+
+  .label {
+    font-size: 10.5px;
+    letter-spacing: 0.02em;
+    fill: var(--mm-eyebrow);
+  }
+
+  .q {
+    font-family: var(--font-inter);
+    font-size: 12.5px;
+    fill: var(--mm-text-2);
+  }
+
+  .num {
+    font-family: var(--font-manrope);
+    font-weight: 800;
+    font-size: 26px;
+    fill: var(--mm-emph);
+  }
+
+  .unit {
+    font-family: var(--font-inter);
+    font-size: 11.5px;
+    fill: var(--mm-text-2);
+  }
+
+  .rule {
+    stroke: var(--mm-border);
+    stroke-width: 1;
+  }
+
+  .symbol-dark {
+    display: none;
+  }
+
+  :global([data-theme='dark']) .symbol-dark {
+    display: inline;
+  }
+
+  :global([data-theme='dark']) .symbol-light {
+    display: none;
+  }
+</style>
