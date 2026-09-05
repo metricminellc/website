@@ -3,9 +3,7 @@
 The pages metricmine.ai serves, what each one is for, and where its
 content comes from. This file is the spec CLAUDE.md's page rule points
 at: a new page or a new section starts by amending this file in its own
-PR, and the implementation PR follows. Dated 2026-09-05 (W-11). Pages
-land in the order of the W2 runbook; until that ladder closes, a page
-listed here may not be on main yet.
+PR, and the implementation PR follows. Dated 2026-09-05 (W-11).
 
 ## The two readers, one rule
 
