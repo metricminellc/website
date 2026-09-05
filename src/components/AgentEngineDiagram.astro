@@ -122,6 +122,11 @@ const h = 60;
     display: block;
   }
 
+  /* On narrow screens the frame scrolls; keep the drawing wide enough to read. */
+  :global(.figure .scroll) .aed {
+    min-width: 900px;
+  }
+
   .lane {
     font-family: var(--font-manrope);
     font-weight: 600;
