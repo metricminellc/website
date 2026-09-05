@@ -1,0 +1,251 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Cube from '../components/Cube.astro';
+import { DOC, AIRBYTE_CONNECTORS_URL, REPO_URL } from '../consts';
+
+const title = 'Where it fits | MetricMine';
+const description =
+  'Airbyte at the door, dbt and DuckDB in the middle, MCP at the edge, Claude Code beside you. Where MetricMine fits in a stack, and what its patterns mean for your own data.';
+
+// docs/demo.md: the five tools and what each answers.
+const tools = [
+  { t: 'list_fact_categories', w: 'which fact categories exist, with row counts, the typed table to query, each category’s subject in the words of the people who approved its contracts, and the registry keys' },
+  { t: 'get_schema', w: 'the declared field manifest behind a schema key' },
+  { t: 'get_context', w: 'the full compiled context behind a schema key, in two named parts: data (what the columns are) and expert_context (what people wrote about them), plus the contract citation' },
+  { t: 'query', w: 'one row-capped SELECT; anything else refuses, naming the failed check' },
+  { t: 'lookup_record', w: 'every place a content key resolves: registry, fact, dimension, or a derived identity' },
+];
+
+// docs/sources-explained.md, section 10: the pattern map.
+const patterns = [
+  { h: 'Rows you are tempted to drop', p: 'Cancellations, returns, voids, soft deletes: retain and flag, state the consequence for every aggregate in the usage text, and let the consumer filter. Conservation against bronze then stays auditable.' },
+  { h: 'Duplicates', p: 'Decide whether they are capture artifacts or events, write the decision as a property on the contract with the measured rate, and enforce the residual grain with an error-severity rule.' },
+  { h: 'A reference newer than your events', p: 'A customer master, a product catalog, a location table refreshed after the transactions: declare the vintage on both contracts, measure the join completeness, set the floor just under it, and keep unresolved rows with null attributes.' },
+  { h: 'Codes shared across systems', p: 'Customer ids, SKUs, site codes: conform them in silver with one normalization rule declared once and cited by every carrier, and let the gate refuse a key that only one table carries.' },
+  { h: 'A series with gaps', p: 'Sensor readings, hourly rates, daily balances: declare the coverage with its count, and let the join completeness, not a silent inner join, show the effect.' },
+  { h: 'Measurements absent when not observed', p: 'A gust, a discount, a reason code: say that null means not reported, not zero, in the field’s meaning, because an agent will read it.' },
+  { h: 'Units and time zones', p: 'Units in column names; one UTC key for joining; local time as reading columns; the conformed calendar does the alignment.' },
+  { h: 'Detail mixed with roll-ups', p: 'Economies and regional aggregates, accounts and their parents, SKUs and bundles: flag the roll-ups by an explicit list, never a name pattern, and say in the usage text what double counts.' },
+  { h: 'When to unify and when to stand alone', p: 'Unify in silver when two sources describe the same entity and a question will need both columns on one row. Leave a category alone when it shares nothing, and let the star’s calendar align it in shape only.' },
+];
+---
+
+<Base title={title} description={description} path="/where-it-fits/">
+  <PageHero eyebrow="Where it fits" title="Airbyte at the door. dbt and DuckDB in the middle. MCP at the edge.">
+    MetricMine is built from standard parts and sits between the tools you
+    already run. This page says what each part does here, what is exercised
+    today and what is not, and how the demo's patterns map to data of your
+    own.
+  </PageHero>
+
+  <section>
+    <div class="container split">
+      <div class="prose">
+        <p class="eyebrow">The front door</p>
+        <h2>Bronze lands through PyAirbyte.</h2>
+        <p>
+          Nothing in the pipeline knows the demo's sources by name. Bronze
+          lands whatever the source list names, the profiler measures whatever
+          the profiling targets name, and the engine emits a category for
+          every mapping contract. Airbyte publishes a catalog of{' '}
+          <a href={AIRBYTE_CONNECTORS_URL}>600+ connectors</a> by its own
+          count; PyAirbyte is the Python library that runs Airbyte
+          connectors, and it is how bronze lands here.
+        </p>
+        <p>
+          What is exercised today: the file connector, seven files deep, with
+          reader options declared per source. What is not: other connector
+          types. The standing non-goal is one connector type, many files, and
+          the site says so rather than implying more.
+        </p>
+      </div>
+      <div class="prose">
+        <p class="eyebrow">The warehouse</p>
+        <h2>DuckDB, on purpose.</h2>
+        <p>
+          DuckDB is the local warehouse because the whole pipeline is meant to
+          run on one machine, keyless, with no cluster and no account. What
+          lives on the machine is a specification, not a silo: the contracts
+          and the compiled context are warehouse-agnostic files in git, and
+          every gold model is regenerated from them, so the data file is
+          disposable and the meaning is portable.
+        </p>
+        <p>
+          dbt profiles carry the execution plane. A second adapter is an
+          experiment in the project's lane, not a promise on this page. The
+          transforms are plain dbt Core models with contracts enforced, so
+          what a dbt engineer already knows applies without translation.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">The edge</p>
+        <h2>MCP, read-only, five tools.</h2>
+        <p>
+          Serving is read-only three layers deep: the connection opens
+          read-only, the query tool accepts exactly one SELECT, and every
+          result is row-capped with an explicit truncated flag. The demo guide
+          wires the server into Claude Desktop.
+        </p>
+      </div>
+      <div class="table-wrap">
+        <table class="data">
+          <thead>
+            <tr>
+              <th>Tool</th>
+              <th>What it answers</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              tools.map((r) => (
+                <tr>
+                  <td><code>{r.t}</code></td>
+                  <td>{r.w}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+      <p class="mono-note">
+        The posture, the statement gate, and the row caps:{' '}
+        <a href={DOC.servingSpec}>docs/spec/serving.md</a>.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Beside you</p>
+        <h2>Claude Code does the judgment work with you.</h2>
+        <p>
+          Silver is human-owned SQL under contracts, because silver is where
+          meaning is decided. That is the work Claude Code is good at when it
+          starts grounded, and the repository ships the context to ground it.
+          Gold is mechanical: the engine emits it the same way every time, and
+          no model gets to improvise there.
+        </p>
+      </div>
+      <div class="cards">
+        <article class="card">
+          <Cube />
+          <h3>Adding a source.</h3>
+          <p>
+            One file to fetch, four entries to declare, two contracts to
+            write, one model, and a paste into the star contract. Everything
+            else is generated by a command and reviewed. The walkthrough was
+            validated by adding a source that is not in the demo to a fresh
+            clone in under fifteen minutes, eight files by hand.
+          </p>
+          <span class="under"><a href={DOC.addingASource}>docs/adding-a-source.md</a></span>
+        </article>
+        <article class="card">
+          <Cube />
+          <h3>Adopting a model you already have.</h3>
+          <p>
+            The scan derives a queue from the tree and names the next command
+            per item; the describe stance drafts a contract for an existing
+            model; verify-grain measures a declared grain rather than trusting
+            it; enforce-properties adds only what the contract implies.
+          </p>
+          <span class="under"><a href={DOC.adoption}>docs/adoption.md</a></span>
+        </article>
+        <article class="card">
+          <Cube />
+          <h3>Asking Oscar.</h3>
+          <p>
+            Oscar is the repository's resident guide, a read-only subagent. Ask
+            it how the system works, where a task is done, what a rule means,
+            or how to keep silver clean, and it answers with the file and the
+            line. Ask for a review and it runs the nine-item checklist, from
+            the all-or-nothing column rule to the never-weaken gate, and stops.
+          </p>
+          <span class="under"><a href={DOC.oscar}>.claude/agents/oscar.md</a></span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Bring your own data</p>
+        <h2>Every pattern in the demo maps to a situation you will recognize.</h2>
+        <p>
+          The demo sources were chosen because they carry these situations in
+          miniature. Each one is a decision written into a contract, a measured
+          completeness on a join, a floor in a rule, and a line in a gate.
+        </p>
+      </div>
+      <div class="cards">
+        {
+          patterns.map((r) => (
+            <article class="card">
+              <Cube />
+              <h3>{r.h}</h3>
+              <p>{r.p}</p>
+            </article>
+          ))
+        }
+      </div>
+      <p class="mono-note">
+        What not to do: no shared entity dimension in gold; no join completeness
+        that was not measured; no rows dropped without a recorded decision; no
+        unit or null semantics that live only in someone's head. The full map:{' '}
+        <a href={DOC.sourcesExplained}>docs/sources-explained.md</a>, section 10.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="container split">
+      <div class="prose">
+        <p class="eyebrow">Fits when</p>
+        <h2>The shape of a good fit.</h2>
+        <ul class="cubes">
+          <li><Cube size={18} /><p>Your data arrives as files or extracts, and you want the modeling and the meaning settled on one machine before anything is promoted anywhere.</p></li>
+          <li><Cube size={18} /><p>You want an assistant to answer over governed data without a warehouse credential in its hands.</p></li>
+          <li><Cube size={18} /><p>You want AI to draft the boring parts of modeling and a person to sign every change, with the record in git.</p></li>
+          <li><Cube size={18} /><p>You want the meaning of the data to travel as files a team shares, and the data itself to be reproducible from them.</p></li>
+        </ul>
+      </div>
+      <div class="prose">
+        <p class="eyebrow">Does not fit when</p>
+        <h2>The standing non-goals.</h2>
+        <ul class="cubes">
+          <li><Cube size={18} /><p>You need streaming, multi-tenancy, authentication, billing, or a hosted UI. Those are non-goals, written into the README and enforced as constraints.</p></li>
+          <li><Cube size={18} /><p>You need a connector type other than the file connector. Other connector types are a standing non-goal today, not a roadmap item.</p></li>
+          <li><Cube size={18} /><p>You need a warehouse other than DuckDB today. A second adapter is an experiment in the project's lane, not a promise.</p></li>
+          <li><Cube size={18} /><p>You need an autonomous multi-step agent. The two agents here propose once and stop.</p></li>
+          <li><Cube size={18} /><p>You need performance figures or a service level. What scale means here is measured on stated machines and published with its environment, in the repository, never as a promise.</p></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="container">
+      <p class="eyebrow">Next</p>
+      <h2>Ten minutes to a served star.</h2>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="/get-started/">Get started</a>
+        <a class="btn btn-secondary" href="/demo/">See the demo</a>
+        <a class="btn btn-secondary" href={REPO_URL}>View on GitHub</a>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .band {
+      background: var(--mm-bg-raised);
+      border-block: 1px solid var(--mm-border);
+    }
+  </style>
+</Base>

@@ -1,0 +1,346 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Transcript from '../components/Transcript.astro';
+import CopyBlock from '../components/CopyBlock.astro';
+import Cube from '../components/Cube.astro';
+import { DOC, REPO_URL } from '../consts';
+
+const title = 'The demo | MetricMine';
+const description =
+  'Two source families, seven public files, three categories, one star. What the MetricMine demo is, why its numbers can be trusted, and how to run it keyless in two minutes.';
+
+// docs/demo.md, Path A, verbatim.
+const pathA = [
+  'git clone https://github.com/metricminellc/metricmine.git',
+  'cd metricmine',
+  'uv sync',
+  'make demo-fetch',
+  `uv run python -c "from metricmine.query import GoldWarehouse; print(GoldWarehouse().list_fact_categories())"`,
+].join('\n');
+
+// docs/sources-explained.md, section 2, condensed.
+const family = [
+  { s: 'online_retail_ii', what: 'Invoice lines of a UK online retailer, December 2009', rows: '45,228 in, 44,721 out', teaches: 'duplicates as capture artifacts; cancellations retained and flagged; a category with no relations' },
+  { s: 'nyc_flights', what: 'Every scheduled departure from EWR, JFK, LGA, January to June 2013', rows: '166,158', teaches: 'cancellations as nulls; local clocks and a UTC key; a half-year window' },
+  { s: 'nyc_weather', what: 'Hourly ASOS observations at the three airports', rows: '13,014', teaches: 'gaps in a series; measurements null when not reported; units in names' },
+  { s: 'nyc_airlines', what: 'The carrier code lookup', rows: '16', teaches: 'a lookup whose names have aged' },
+  { s: 'nyc_planes', what: 'FAA registry rows for the tail numbers seen', rows: '3,322', teaches: 'a registry that does not know some entities' },
+  { s: 'ourairports_airports', what: 'Every airport with an IATA code, 2026', rows: '9,057', teaches: 'a reference newer than the events; a code that moved' },
+  { s: 'ourairports_runways', what: 'The runways of those airports, 2026', rows: '10,760', teaches: 'an aggregate derived from a many-to-one reference' },
+];
+
+// docs/sources.md: the declared joins with their measured completeness and floors.
+const joins = [
+  { table: 'silver_flights', join: 'carrier', c: '1.0000', f: '1.00' },
+  { table: 'silver_flights', join: 'aircraft', c: '0.8396', f: '0.80' },
+  { table: 'silver_flights', join: 'origin', c: '1.0000', f: '1.00' },
+  { table: 'silver_flights', join: 'destination', c: '0.9791', f: '0.97' },
+  { table: 'silver_airport_weather', join: 'airport', c: '1.0000', f: '1.00' },
+  { table: 'the star', join: 'flights to origin weather (cross-category)', c: '0.9994', f: '0.99' },
+];
+
+// tests/fixtures/serving_questions.json: the measured answers.
+const questions = [
+  { q: 'Which carrier had the highest average departure delay, among carriers with at least 1,000 flights?', a: 'ExpressJet (ev) at 23.41 minutes, cancellations excluded by construction.' },
+  { q: 'At each origin, how much later do flights depart in hours with visibility under one mile than in ten-mile visibility?', a: 'EWR 33.01 against 15.57 minutes; JFK 37.64 against 10.51; LGA 14.94 against 9.30.' },
+  { q: 'How many flights went to Palm Beach (PBI), and why do they carry no destination name?', a: '3,471, and the reason is in the expert context: the 2026 reference codes it DJT.' },
+  { q: 'Which manufacturers’ aircraft flew the most, and how old were they?', a: 'Boeing (13.6 years), Embraer (9.3), Airbus (7.0); about 16 percent of flights resolve no aircraft, and the answer says so.' },
+  { q: 'Which three countries have the most invoice lines in the retail sample?', a: 'United Kingdom 42,354; Eire 596; Germany 417. The retail category shares nothing with the others but the star’s shape.' },
+  { q: 'How many flights find no weather observation at their origin in their departure hour?', a: '97. The declared join’s completeness of 0.9994 says the same number as a rate.' },
+];
+---
+
+<Base title={title} description={description} path="/demo/">
+  <PageHero eyebrow="The demo" title="Two source families. Seven files. One star.">
+    The demo is the grounding example for everything else on this site: what
+    it is, why its numbers can be trusted, and how the system behaves against
+    data that has the problems real data has. None of the data is the point.
+    What was done to it is.
+  </PageHero>
+
+  <section>
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">What you are looking at</p>
+        <h2>The family at a glance.</h2>
+        <p>
+          A retail sample that relates to nothing else, kept on purpose, and an
+          aviation family chosen because it carries, in miniature, the
+          situations that make multi-source work hard. Three categories reach
+          the star: <code>invoice_lines</code> from the retail table alone,{' '}
+          <code>flights</code> from five aviation tables unified in silver, and{' '}
+          <code>airport_weather</code> from the weather and reference tables.
+        </p>
+      </div>
+      <div class="table-wrap">
+        <table class="data">
+          <thead>
+            <tr>
+              <th>Source</th>
+              <th>What it is</th>
+              <th>Rows</th>
+              <th>What it teaches</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              family.map((r) => (
+                <tr>
+                  <td><code>{r.s}</code></td>
+                  <td>{r.what}</td>
+                  <td>{r.rows}</td>
+                  <td>{r.teaches}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+      <p class="mono-note">
+        Every extract is public, cited, licensed for redistribution (CC0, public
+        domain, CC BY 4.0), and pinned to a publisher commit and a raw digest.
+        The register: <a href={DOC.sources}>docs/sources.md</a>. The reasoning,
+        join by join: <a href={DOC.sourcesExplained}>docs/sources-explained.md</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Why it can be trusted</p>
+        <h2>Every claim has a test that holds it.</h2>
+        <p>
+          The demo was built so that a stranger can check it without talking
+          to anyone. These are the checks.
+        </p>
+      </div>
+      <div class="cards two">
+        <article class="card">
+          <Cube />
+          <h3>The bytes are the bytes.</h3>
+          <p>
+            Each fetch script refuses to run on raw bytes with any digest but
+            the recorded one. The seven extracts reproduced byte-identically on
+            two machines, and a gate holds each one to its README.
+          </p>
+          <span class="under">tests/test_committed_samples.py</span>
+        </article>
+        <article class="card">
+          <Cube />
+          <h3>One cold build, every test green.</h3>
+          <p>
+            From an empty warehouse, dbt builds 31 contracted models and runs
+            303 tests: shape enforced at compile time, content rules at
+            contract-declared severity, the declared joins among them.
+          </p>
+          <span class="under">PASS=334 WARN=0 ERROR=0, docs/demo.md</span>
+        </article>
+        <article class="card">
+          <Cube />
+          <h3>Nothing was dropped on the way.</h3>
+          <p>
+            Row conservation holds to the digit through every plane: 166,158
+            flights in bronze, in silver, in the fact, and in the mart. Every
+            one of the 3,439 departure hours is a calendar row the weather
+            category minted too.
+          </p>
+          <span class="under">tests/test_aviation_conservation.py</span>
+        </article>
+        <article class="card">
+          <Cube />
+          <h3>The answers were measured first.</h3>
+          <p>
+            Seven questions, their SQL, and their answers are committed as a
+            fixture and proven through the serving path, so what the demo
+            guide says an agent should answer is what the warehouse answers.
+          </p>
+          <span class="under">tests/test_serving_questions.py</span>
+        </article>
+      </div>
+
+      <h3 class="sub">The joins, declared and measured.</h3>
+      <p class="prose">
+        Every join is declared on the contract with the completeness measured
+        at the profile and the floor the rule enforces, so a reference refresh
+        that adds coverage passes and one that loses it fails. Unresolved rows
+        stay, with null attributes, and the expert context says why.
+      </p>
+      <div class="table-wrap">
+        <table class="data">
+          <thead>
+            <tr>
+              <th>Where</th>
+              <th>Join</th>
+              <th>Measured completeness</th>
+              <th>Floor</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              joins.map((j) => (
+                <tr>
+                  <td><code>{j.table}</code></td>
+                  <td>{j.join}</td>
+                  <td>{j.c}</td>
+                  <td>{j.f}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+      <p class="mono-note">
+        Re-measured on every run of the local lane by{' '}
+        <a href={DOC.testDeclaredJoins}>tests/test_declared_joins.py</a>.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Ask it something</p>
+        <h2>A cross-source question the star was built to answer.</h2>
+        <p>
+          The first question the demo guide tells you to ask, and the answer
+          the serving path holds. The agent joins two categories on the
+          conformed airport code and the conformed calendar hour, and it says
+          which part of its answer is a measurement and which part an expert
+          wrote.
+        </p>
+      </div>
+      <Transcript />
+      <h3 class="sub">Six more, with what to check for.</h3>
+      <div class="table-wrap">
+        <table class="data">
+          <thead>
+            <tr>
+              <th>Ask</th>
+              <th>The measured answer</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              questions.map((r) => (
+                <tr>
+                  <td>{r.q}</td>
+                  <td>{r.a}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="container split">
+      <div class="prose">
+        <p class="eyebrow">Data and expert context, kept apart</p>
+        <h2>The agent can tell a measurement from a claim.</h2>
+        <p>
+          Every registry entry keeps two things apart by name. <code>data</code>{' '}
+          is derived from the contracts' typed declarations: each column's type
+          and role, the grain, the conformed keys, the typed surface to query.{' '}
+          <code>expert_context</code> is what people wrote: the subject, how to
+          read the table, its limitations, its vintage, the joins with their
+          measured completeness, and a meaning for every field. It opens with a
+          note saying it is authored, not measured, and that where a claim and
+          the data disagree, the data is the fact and the claim is what to
+          check.
+        </p>
+        <p>
+          That split is the point of the multi-source demo. None of what
+          follows is in the rows. All of it is in the registry, and an agent
+          that reads the context before it queries answers correctly.
+        </p>
+      </div>
+      <div>
+        <ul class="cubes">
+          <li>
+            <Cube size={18} />
+            <p>
+              The weather table says that a null gust means no gust was
+              reported, not zero.
+            </p>
+          </li>
+          <li>
+            <Cube size={18} />
+            <p>
+              The flights table says that a null arrival delay covers cancelled
+              flights and 597 flights that departed with no arrival record.
+            </p>
+          </li>
+          <li>
+            <Cube size={18} />
+            <p>
+              The airport reference is a 2026 snapshot joined to 2013 flights,
+              so Palm Beach flew as PBI and is coded DJT in the reference, and
+              3,471 flights carry no destination attributes on purpose. The
+              contract declines to apply free-text keywords as a crosswalk, and
+              the demo asks about it deliberately.
+            </p>
+          </li>
+          <li>
+            <Cube size={18} />
+            <p>
+              Carrier names are as published in 2013. Several carriers have
+              merged or renamed since, and the context says so.
+            </p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Run it</p>
+        <h2>Two minutes to a served star.</h2>
+        <p>
+          macOS or Linux, git, and uv. No API keys, no accounts, no cloud
+          resources. Every tagged release ships the gold export as a release
+          asset pinned by a committed digest manifest; <code>make demo-fetch</code>{' '}
+          downloads and verifies it.
+        </p>
+      </div>
+      <CopyBlock text={pathA} id="path-a" />
+      <p class="prose">
+        Expected output: three categories, each with its fact table, row count,
+        typed table, authored subject, and registry keys: <code>airport_weather</code>{' '}
+        (13,014 rows), <code>flights</code> (166,158 rows), and{' '}
+        <code>invoice_lines</code> (44,721 rows). Then wire the server into
+        Claude Desktop and ask the question above. The wiring, the full keyless
+        replay from raw data (<code>make demo</code>, about eight minutes), and
+        the troubleshooting are in <a href={DOC.demo}>docs/demo.md</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="container">
+      <p class="eyebrow">Next</p>
+      <h2>Take the pattern home.</h2>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="/where-it-fits/">Where it fits</a>
+        <a class="btn btn-secondary" href="/get-started/">Get started</a>
+        <a class="btn btn-secondary" href={REPO_URL}>View on GitHub</a>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .band {
+      background: var(--mm-bg-raised);
+      border-block: 1px solid var(--mm-border);
+    }
+
+    .sub {
+      margin-top: 36px;
+    }
+  </style>
+</Base>

@@ -1,0 +1,261 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Cube from '../components/Cube.astro';
+import { DOC, DOCS_URL, REPO_URL } from '../consts';
+
+const title = 'What it is, and what it is not | MetricMine';
+const description =
+  'MetricMine is a contract-driven data pipeline and a governance loop for AI-assisted modeling. It works alongside dbt, Airbyte, and Claude Code; it is not a replacement for any of them.';
+---
+
+<Base title={title} description={description} path="/what-it-is/">
+  <PageHero eyebrow="What it is" title="What MetricMine is, and what it is not.">
+    A fast answer for anyone who arrives from dbt, Airbyte, or a Claude Code
+    session and wants to know where this fits. Short version: it sits between
+    the tools you already use, and it works alongside them.
+  </PageHero>
+
+  <section>
+    <div class="container split">
+      <div class="prose">
+        <p class="eyebrow">It is</p>
+        <h2>Four true sentences.</h2>
+        <ul class="cubes">
+          <li>
+            <Cube size={18} />
+            <p>
+              A contract-driven medallion pipeline that runs end to end on one
+              machine: bronze lands raw, a deterministic profiler describes it,
+              approved ODCS contracts shape silver and gold, and an
+              auto-modeling engine emits the whole gold layer from the approved
+              contract.
+            </p>
+          </li>
+          <li>
+            <Cube size={18} />
+            <p>
+              A governance loop for AI-assisted modeling. Two narrow agents
+              draft contracts. A person approves by merging a pull request.
+              Deterministic code and dbt execute. Every approved contract
+              records in git who proposed it and which person merged it.
+            </p>
+          </li>
+          <li>
+            <Cube size={18} />
+            <p>
+              A reference implementation, built in the open, with forty-one
+              binding decisions in a versioned register, fifty-three measured
+              findings, and no claim without a reproducible command behind it.
+            </p>
+          </li>
+          <li>
+            <Cube size={18} />
+            <p>
+              A working demo: seven public sources, three fact categories, one
+              star, served read-only over MCP, keyless, from a fresh clone in
+              two minutes.
+            </p>
+          </li>
+        </ul>
+      </div>
+      <div class="prose">
+        <p class="eyebrow">It is not</p>
+        <h2>Six things people ask.</h2>
+        <ul class="cubes">
+          <li>
+            <Cube size={18} />
+            <p>
+              <strong>Not a replacement for dbt.</strong> It is a dbt project.
+              The transforms are dbt Core models with enforced contracts, and
+              the engine emits dbt model files, never DDL. Your dbt skills
+              carry over unchanged.
+            </p>
+          </li>
+          <li>
+            <Cube size={18} />
+            <p>
+              <strong>Not a replacement for Airbyte.</strong> Bronze lands
+              through PyAirbyte. MetricMine starts where the connector stops
+              and never touches the source.
+            </p>
+          </li>
+          <li>
+            <Cube size={18} />
+            <p>
+              <strong>Not an alternative to Claude Code.</strong> It is a
+              repository built to be worked on with Claude Code, and it ships
+              the context layer to do it: CLAUDE.md, Oscar the read-only guide
+              and reviewer, a review skill, a working-tree guard, and a GitHub
+              Action.
+            </p>
+          </li>
+          <li>
+            <Cube size={18} />
+            <p>
+              <strong>Not a hosted product.</strong> There is no service, no
+              signup, no account, and no pricing. The demo runs keyless on
+              your machine, and the only database artifact the project
+              publishes is the demo export attached to a release.
+            </p>
+          </li>
+          <li>
+            <Cube size={18} />
+            <p>
+              <strong>Not an autonomous agent.</strong> Each of the two agents
+              makes one structured API call, holds no warehouse credential,
+              writes only to an outbox, and never merges its own work.
+              Autonomous multi-step agents are a standing non-goal.
+            </p>
+          </li>
+          <li>
+            <Cube size={18} />
+            <p>
+              <strong>Not a promise about scale.</strong> What scale means here
+              is measured on stated machines and published with its
+              environment in the repository, never as a claim on this site.
+            </p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Alongside, not instead</p>
+        <h2>What it adds to the tools you already run.</h2>
+        <p>
+          Each row names what stays yours and what MetricMine puts beside it.
+        </p>
+      </div>
+      <div class="table-wrap">
+        <table class="data">
+          <thead>
+            <tr>
+              <th>If you use</th>
+              <th>MetricMine adds</th>
+              <th>What stays yours</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>dbt Core</td>
+              <td>
+                ODCS contracts enforced at build time, generated contract tests
+                in CI, an engine-emitted gold layer under an ownership
+                manifest, and a scan that adopts an existing model into the
+                gates.
+              </td>
+              <td>Your models, your properties files, your profiles.</td>
+            </tr>
+            <tr>
+              <td>Airbyte or PyAirbyte</td>
+              <td>
+                A landing loop over a declared source list, a committed profile
+                per landed table, and a cleanup contract per source that a
+                person approves.
+              </td>
+              <td>Your connectors and their configuration.</td>
+            </tr>
+            <tr>
+              <td>DuckDB</td>
+              <td>
+                Three schemas in one local file, a read-only serving posture
+                three layers deep, and a demo export verified content-equal
+                by query.
+              </td>
+              <td>Your data, on your machine.</td>
+            </tr>
+            <tr>
+              <td>Claude Code</td>
+              <td>
+                Oscar, the resident guide and reviewer, a read-only subagent
+                that answers from the repository's own files; CLAUDE.md with
+                nineteen hard rules; the contract-review skill; the
+                working-tree guard; and the GitHub Action for the authoring
+                loop.
+              </td>
+              <td>Your workflow, plan mode and all.</td>
+            </tr>
+            <tr>
+              <td>An MCP client</td>
+              <td>
+                A server with five read-only tools over the gold star, and a
+                context registry that keeps what was measured apart from what
+                an expert wrote.
+              </td>
+              <td>Your assistant. The demo guide wires Claude Desktop.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="prose">
+        <p class="eyebrow">The idea in one paragraph</p>
+        <h2>The human decides meaning. The machine decides structure.</h2>
+        <p>
+          The human decides what the data means and how sources reconcile. The
+          machine decides how that meaning is structured and served. Meaning is
+          declared in two places, the silver cleanup contract and the gold
+          mapping contract, and everything downstream of those two declarations
+          is a mechanical, byte-reproducible function of them: 22 of the 31 dbt
+          models on main are engine-emitted and never hand-written. The nine
+          exceptions are silver, the human-owned plane, because silver is where
+          meaning is decided. What the agent proposes for silver is the
+          contract, not the SQL.
+        </p>
+        <p>
+          That split is what the design buys. A wrong number has an address: it
+          traces to the silver logic or to the mapping declaration, never to a
+          hand edit somewhere in the DAG. Determinism means the same inputs emit
+          byte-identical model files, so a change is reproducible, diffable, and
+          reviewable; it does not mean the models are right. Correctness comes
+          from separate machinery: contracts enforced at build time, five
+          conservation tests in CI, and a grain check that measures a declared
+          grain rather than trusting it. The pipeline offers traceability and
+          conservation, not observability, and regeneration lands as a pull
+          request, never as an automatic update.
+        </p>
+        <div class="callout">
+          <p>
+            The gold layer is a generic content-addressed container by design,
+            not an automated star schema. Its three measured trade-offs are
+            recorded where a reader will look, each linked to the finding that
+            measured it: <a href={DOC.readme}>the README</a> carries them, and{' '}
+            <a href={DOC.goldSpec}>the gold layer spec</a> carries the reading
+            rules.
+          </p>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="container">
+      <p class="eyebrow">Next</p>
+      <h2>See it answer, or read how it is built.</h2>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="/demo/">See the demo</a>
+        <a class="btn btn-secondary" href={DOCS_URL}>Read the docs</a>
+        <a class="btn btn-secondary" href={REPO_URL}>View on GitHub</a>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .band {
+      background: var(--mm-bg-raised);
+      border-block: 1px solid var(--mm-border);
+    }
+
+    .split .eyebrow {
+      margin-top: 0;
+    }
+  </style>
+</Base>
