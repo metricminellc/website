@@ -10,7 +10,7 @@ is also the home of the MetricMine brand system. Treat both with care.
   maps, plus a 404. One layout (`src/layouts/Base.astro`), the components
   under `src/components/` (the flow, the hero visual, the proof strip, the
   agent-and-engine diagram, the transcript, the page hero, the copy block,
-  the cube bullet), tokens and shared furniture in `src/styles/tokens.css`,
+  the OS tabs, the cube bullet), tokens and shared furniture in `src/styles/tokens.css`,
   constants and every external URL in `src/consts.ts`.
 - `src/assets/fonts/` holds the three self-hosted OFL faces as latin-subset
   variable woff2 files with their license texts (W-12).
@@ -79,7 +79,9 @@ is also the home of the MetricMine brand system. Treat both with care.
   file in this repo.
 - The site names only what the pipeline repository names (the reviewer,
   the skill, the guard, the Action, the tools); nothing is introduced here
-  first.
+  first. A command that differs by platform sits in the OS toggle (W-17),
+  both panels quoted from docs/demo.md; the Windows text lands there
+  before it is quoted here.
 - Sentence case for UI labels. Buttons name the action.
 - No em dashes anywhere, including code comments and PR descriptions.
 

@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import CopyBlock from '../components/CopyBlock.astro';
+import OsTabs from '../components/OsTabs.astro';
 import Cube from '../components/Cube.astro';
 import { DOC, DOCS_URL, REPO_URL, CHANGELOG_URL } from '../consts';
 
@@ -9,15 +10,18 @@ const title = 'Get started: tutorials and resources | MetricMine';
 const description =
   'The ten-minute path to a served star, then three learning curves with one document each: what the demo shows, how to run it, and how to take the pattern home to your own data.';
 
-// docs/demo.md, Path A and the first question, verbatim.
+// docs/demo.md, Path A and the first question, verbatim. Where a step
+// differs by platform it sits in the OS toggle (W-17): the macOS and Linux
+// text and the Windows text, both quoted from the guide.
 const stepClone = [
   'git clone https://github.com/metricminellc/metricmine.git',
   'cd metricmine',
   'uv sync',
 ].join('\n');
-const stepFetch = 'make demo-fetch';
+const stepFetchUnix = 'make demo-fetch';
+const stepFetchWindows = 'uv run mm demo-fetch';
 const stepList = `uv run python -c "from metricmine.query import GoldWarehouse; print(GoldWarehouse().list_fact_categories())"`;
-const stepWire = JSON.stringify(
+const stepWireUnix = JSON.stringify(
   {
     mcpServers: {
       'metricmine-gold': {
@@ -29,11 +33,23 @@ const stepWire = JSON.stringify(
   null,
   2,
 );
+const stepWireWindows = JSON.stringify(
+  {
+    mcpServers: {
+      'metricmine-gold': {
+        command: 'C:\\absolute\\path\\to\\metricmine\\.venv\\Scripts\\python.exe',
+        args: ['-m', 'metricmine.server'],
+      },
+    },
+  },
+  null,
+  2,
+);
 const stepAsk =
   'Using the metricmine-gold tools: do flights departing New York in an hour with precipitation at their origin run later than flights in a dry hour, and are they cancelled more often? Say what you joined on and what the context told you.';
 
-// docs/demo.md, Path B, verbatim.
-const pathB = [
+// docs/demo.md, Path B, verbatim, both platforms.
+const pathBUnix = [
   'export DBT_PROFILES_DIR="$PWD/transform"',
   'uv run dbt deps --project-dir transform',
   'make ingest',
@@ -41,13 +57,22 @@ const pathB = [
   'make export-demo',
   'uv run pytest -q',
 ].join('\n');
+const pathBWindows = [
+  '$env:DBT_PROFILES_DIR = "$PWD\\transform"',
+  'uv run dbt deps --project-dir transform',
+  'uv run mm ingest',
+  'uv run dbt build --project-dir transform --target local',
+  'uv run mm export-demo',
+  'uv run pytest -q',
+].join('\n');
 ---
 
 <Base title={title} description={description} path="/get-started/">
   <PageHero eyebrow="Get started" title="Ten minutes to a served star. Then three curves, one document each.">
-    macOS or Linux, git, and uv. No API keys, no accounts, no cloud resources.
-    Everything below is keyless by design, and every command is quoted from
-    the repository's own demo guide.
+    macOS, Linux, or Windows x64, with git and uv. No API keys, no accounts,
+    no cloud resources. Everything below is keyless by design, and every
+    command is quoted from the repository's own demo guide; pick your
+    platform once and every block on the page follows.
   </PageHero>
 
   <section>
@@ -81,7 +106,7 @@ const pathB = [
               and pins the asset's sha256, size, and content; the fetch
               verifies all three.
             </p>
-            <CopyBlock text={stepFetch} id="gs-fetch" />
+            <OsTabs id="gs-fetch" unix={stepFetchUnix} windows={stepFetchWindows} />
           </div>
         </li>
         <li>
@@ -101,12 +126,14 @@ const pathB = [
             <h3>Wire it into Claude Desktop.</h3>
             <p>
               Merge this into <code>claude_desktop_config.json</code> (on
-              macOS under Application Support/Claude), replace the command
-              path with your absolute clone path, quit Claude Desktop fully,
-              and reopen it. A new chat lists <code>metricmine-gold</code> with
-              five tools.
+              macOS under Application Support/Claude; on Windows under{' '}
+              <code>%APPDATA%\Claude</code>, opened from Settings, Developer,
+              Edit Config), replace the command path with your absolute clone
+              path, quit Claude Desktop fully, and reopen it. A new chat lists{' '}
+              <code>metricmine-gold</code> with five tools. The guide carries
+              the note for the Microsoft Store build.
             </p>
-            <CopyBlock text={stepWire} id="gs-wire" />
+            <OsTabs id="gs-wire" unix={stepWireUnix} windows={stepWireWindows} />
           </div>
         </li>
         <li>
@@ -124,10 +151,12 @@ const pathB = [
       </ol>
       <div class="callout">
         <p>
-          Something off? <code>make doctor</code> checks the platform, uv, the
-          locked toolchain, and the demo artifact, and prints the two exports
-          the local dbt lanes need. The troubleshooting table, including the
-          TLS note for python.org Pythons, is in <a href={DOC.demo}>docs/demo.md</a>.
+          Something off? <code>make doctor</code> (<code>uv run mm doctor</code>{' '}
+          on Windows) checks the platform, uv, the locked toolchain, and the
+          demo artifact, and prints the two environment lines the local dbt
+          lanes need, in your shell's form. The troubleshooting section,
+          including the TLS note for python.org Pythons and the Windows group,
+          is in <a href={DOC.demo}>docs/demo.md</a>.
         </p>
       </div>
     </div>
@@ -141,10 +170,11 @@ const pathB = [
         <p>
           Every source is a committed sample pinned to its publisher's commit
           and digest, so the full path needs no key either. Steps one to three
-          also run as one command, <code>make demo</code>. From the repo root:
+          also run as one command, <code>make demo</code> (<code>uv run mm demo</code>{' '}
+          on Windows). From the repo root:
         </p>
       </div>
-      <CopyBlock text={pathB} id="gs-path-b" />
+      <OsTabs id="gs-path-b" unix={pathBUnix} windows={pathBWindows} />
       <p class="prose">
         What to expect: <code>make ingest</code> lands 247,555 bronze rows
         across seven tables exactly as they appear in the committed extracts;{' '}

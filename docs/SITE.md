@@ -22,7 +22,7 @@ the measured curves stay in the repository with their environment.
 | `/what-it-is/` | What it is | What it is and what it is not; alongside dbt, Airbyte, DuckDB, Claude Code, and MCP clients; the meaning-versus-structure paragraph | README.md (the front door and the trade-offs), CLAUDE.md non-goals, docs/adoption.md |
 | `/demo/` | Demo | The family at a glance; why it can be trusted; the declared joins; the rendered Q2 transcript and the six other measured answers; data and expert context kept apart; Path A | docs/sources-explained.md, docs/sources.md, docs/demo.md, tests/fixtures/serving_questions.json, tests/test_declared_joins.py, tests/test_aviation_conservation.py, tests/test_committed_samples.py, tests/test_serving_questions.py |
 | `/where-it-fits/` | Where it fits | Airbyte at the door (Airbyte's own connector count, cited to Airbyte); DuckDB on purpose; MCP at the edge (the five tools); Claude Code beside you; the pattern map; fits when and does not fit when | docs/adding-a-source.md, docs/adoption.md, docs/demo.md, docs/sources-explained.md section 10, docs/spec/serving.md, README.md non-goals |
-| `/get-started/` | Get started | The ten-minute path (Path A, the Claude Desktop wiring, the first question), Path B, the three learning curves, working in the repository with Claude Code, the deeper shelf | docs/demo.md, docs/operating.md, docs/adoption.md, docs/adding-a-source.md, docs/README.md, CLAUDE.md, .claude/ |
+| `/get-started/` | Get started | The ten-minute path (Path A, the Claude Desktop wiring, the first question), Path B, the three learning curves, working in the repository with Claude Code, the deeper shelf; the platform-dependent steps behind the OS toggle (W-17) | docs/demo.md, docs/operating.md, docs/adoption.md, docs/adding-a-source.md, docs/README.md, CLAUDE.md, .claude/ |
 | `/why-open-source/` | Why open source | Why the method needs readers; what open source means here (the stable line, the non-goals); the name and logo exception; taking part | README.md (the stability rule, Name and logo), LICENSE, NOTICE, CONTRIBUTING.md, CODE_OF_CONDUCT.md, SECURITY.md, the issue forms |
 | `/about/` | About | The project in one paragraph; the origin line; the name and the mark; the register as memory; the builder credit; contact | README.md, NOTICE, docs/decisions/decision-register.md, docs/verification/gate_proof_findings.md, CLAUDE.md rule 19 |
 | `/404` | (none) | Page not found | none |
@@ -45,7 +45,11 @@ organization, and the contact address, then the credit line (W-08, W-10).
   under a table names the document.
 - Command blocks quote the repository's own documentation verbatim
   (README "See it run", docs/demo.md Path A and Path B) and never invent
-  a command.
+  a command. Where the command differs by platform, the block is an OS
+  toggle (`OsTabs.astro`, W-17): the macOS and Linux panel and the
+  Windows panel, both quoted, the visitor's choice resolved before paint
+  and remembered across pages; a block that reads the same on both
+  platforms stays a plain `CopyBlock`.
 - The rendered transcript (`Transcript.astro`) is built from the measured
   Q2 answer in the serving-questions fixture. The site never shows a
   product screenshot.
@@ -70,17 +74,19 @@ Numbers on the site and where each one is held:
 |---|---|
 | 7 sources; the seven extracts, rows, licenses, pins | docs/sources.md; tests/test_committed_samples.py |
 | 3 categories; 13,014, 166,158, 44,721 rows | docs/demo.md |
+| 2 minutes; about 8 minutes | docs/demo.md (the Path A and Path B headings) |
+| a Linux sandbox, a Mac, and a Windows runner (the demo digest) | README.md; the demo-windows workflow's manifest gate |
 | 31 models, 303 tests, PASS=334; 247,555 bronze rows | docs/demo.md |
 | 22 of 31 engine-emitted; nine human-owned silver models | README.md |
 | 13 contracts | contracts/ |
-| 41 decisions, 53 findings | docs/decisions/decision-register.md; docs/verification/gate_proof_findings.md |
+| 42 decisions, 57 findings | docs/decisions/decision-register.md; docs/verification/gate_proof_findings.md |
 | join completeness 1.0000, 0.8396, 1.0000, 0.9791, 1.0000, 0.9994 and the floors | docs/sources.md; tests/test_declared_joins.py |
 | 29.44 vs 12.42 minutes; 8.95 vs 2.41 percent; 13,492 and 152,569 flights; 97 flights; 3,471 flights; the other measured answers | tests/fixtures/serving_questions.json; tests/test_serving_questions.py |
 | 3,439 departure hours; 597 flights; the vintage effects | README.md; docs/demo.md; docs/sources.md |
 | under fifteen minutes, eight files by hand | docs/adding-a-source.md |
 | nineteen hard rules; the nine-item checklist; five tools; Oscar | CLAUDE.md; .claude/skills/contract-review/SKILL.md; docs/demo.md; .claude/agents/oscar.md |
 | 600+ connectors | airbyte.com/connectors, Airbyte's own figure, cited inline |
-| v1.1.0 | the release page, linked from the chip |
+| v1.1.1 | the release page, linked from the chip |
 
 ## Adding a page
 

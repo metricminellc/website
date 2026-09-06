@@ -16,7 +16,7 @@ export const CONTACT_EMAIL = 'github@metricmine.ai';
 export const DOCS_URL = `${REPO_BLOB}/docs/README.md`;
 
 // The release line (W-15): the current tagged release and the changelog.
-export const RELEASE_TAG = 'v1.1.0';
+export const RELEASE_TAG = 'v1.1.1';
 export const RELEASE_URL = `${REPO_URL}/releases/tag/${RELEASE_TAG}`;
 export const RELEASES_URL = `${REPO_URL}/releases`;
 export const CHANGELOG_URL = `${REPO_BLOB}/CHANGELOG.md`;

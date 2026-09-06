@@ -588,6 +588,12 @@ li code {
 .cmd code {
   color: var(--mm-text);
   font-size: 0.875rem;
+  /* A command block inside a list item or a card is not an inline chip:
+     the chip rule above must not draw a border and a fill around it. */
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
 }
 
 /* Prose-like blocks (a question to paste) wrap instead of scrolling. */
