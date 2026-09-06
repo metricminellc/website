@@ -92,6 +92,25 @@ const ogImage = new URL('/og-card.png', SITE_URL).href;
       })();
     </script>
 
+    <!-- OS init for the command blocks (W-17): before paint, the remembered
+         choice or the visitor's platform; macOS and Linux otherwise. -->
+    <script is:inline>
+      (function () {
+        var os = null;
+        try {
+          os = localStorage.getItem('mm-os');
+        } catch (e) {}
+        if (os !== 'windows' && os !== 'unix') {
+          var data = navigator.userAgentData;
+          var platform = (data && data.platform) || navigator.platform || '';
+          os = /windows/i.test(platform) || /windows/i.test(navigator.userAgent || '')
+            ? 'windows'
+            : 'unix';
+        }
+        document.documentElement.setAttribute('data-os', os);
+      })();
+    </script>
+
     {
       CF_BEACON_TOKEN && (
         <script
