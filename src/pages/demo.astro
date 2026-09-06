@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import Transcript from '../components/Transcript.astro';
-import CopyBlock from '../components/CopyBlock.astro';
+import OsTabs from '../components/OsTabs.astro';
 import Cube from '../components/Cube.astro';
 import { DOC, REPO_URL } from '../consts';
 
@@ -10,13 +10,22 @@ const title = 'The demo | MetricMine';
 const description =
   'Two source families, seven public files, three categories, one star. What the MetricMine demo is, why its numbers can be trusted, and how to run it keyless in two minutes.';
 
-// docs/demo.md, Path A, verbatim.
-const pathA = [
+// docs/demo.md, Path A, verbatim: the macOS and Linux block and, behind
+// the OS toggle (W-17), the Windows block.
+const listCategories = `uv run python -c "from metricmine.query import GoldWarehouse; print(GoldWarehouse().list_fact_categories())"`;
+const pathAUnix = [
   'git clone https://github.com/metricminellc/metricmine.git',
   'cd metricmine',
   'uv sync',
   'make demo-fetch',
-  `uv run python -c "from metricmine.query import GoldWarehouse; print(GoldWarehouse().list_fact_categories())"`,
+  listCategories,
+].join('\n');
+const pathAWindows = [
+  'git clone https://github.com/metricminellc/metricmine.git',
+  'cd metricmine',
+  'uv sync',
+  'uv run mm demo-fetch',
+  listCategories,
 ].join('\n');
 
 // docs/sources-explained.md, section 2, condensed.
@@ -302,21 +311,23 @@ const questions = [
         <p class="eyebrow">Run it</p>
         <h2>Two minutes to a served star.</h2>
         <p>
-          macOS or Linux, git, and uv. No API keys, no accounts, no cloud
-          resources. Every tagged release ships the gold export as a release
-          asset pinned by a committed digest manifest; <code>make demo-fetch</code>{' '}
-          downloads and verifies it.
+          macOS, Linux, or Windows x64, with git and uv. No API keys, no
+          accounts, no cloud resources. Every tagged release ships the gold
+          export as a release asset pinned by a committed digest manifest;{' '}
+          <code>make demo-fetch</code> (<code>uv run mm demo-fetch</code> on
+          Windows) downloads and verifies it.
         </p>
       </div>
-      <CopyBlock text={pathA} id="path-a" />
+      <OsTabs id="path-a" unix={pathAUnix} windows={pathAWindows} />
       <p class="prose">
         Expected output: three categories, each with its fact table, row count,
         typed table, authored subject, and registry keys: <code>airport_weather</code>{' '}
         (13,014 rows), <code>flights</code> (166,158 rows), and{' '}
         <code>invoice_lines</code> (44,721 rows). Then wire the server into
-        Claude Desktop and ask the question above. The wiring, the full keyless
-        replay from raw data (<code>make demo</code>, about eight minutes), and
-        the troubleshooting are in <a href={DOC.demo}>docs/demo.md</a>.
+        Claude Desktop and ask the question above. The wiring on both platforms,
+        the full keyless replay from raw data (<code>make demo</code>, about
+        eight minutes), and the troubleshooting are in{' '}
+        <a href={DOC.demo}>docs/demo.md</a>.
       </p>
     </div>
   </section>
