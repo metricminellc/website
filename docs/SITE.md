@@ -86,7 +86,7 @@ Numbers on the site and where each one is held:
 | under fifteen minutes, eight files by hand | docs/adding-a-source.md |
 | nineteen hard rules; the nine-item checklist; five tools; Oscar | CLAUDE.md; .claude/skills/contract-review/SKILL.md; docs/demo.md; .claude/agents/oscar.md |
 | 600+ connectors | airbyte.com/connectors, Airbyte's own figure, cited inline |
-| v1.1.0 | the release page, linked from the chip |
+| v1.1.1 | the release page, linked from the chip |
 
 ## Adding a page
 
