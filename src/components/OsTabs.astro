@@ -1,0 +1,167 @@
+---
+// An OS toggle for a command block that differs by platform (W-17). Two
+// panels, both server-rendered; the root's data-os attribute picks the
+// visible one, resolved before paint in Base.astro from the remembered
+// choice (mm-os in localStorage) or the visitor's platform, so there is no
+// layout shift and no fetch. One choice per page: every toggle follows the
+// same attribute, and a click on any of them moves all of them. The text
+// of each panel is passed in and quoted from the repository's own
+// documentation, never invented here (the CopyBlock rule).
+import CopyBlock from './CopyBlock.astro';
+
+interface Props {
+  id: string;
+  unix: string;
+  windows: string;
+  wrap?: boolean;
+}
+const { id, unix, windows, wrap = false } = Astro.props;
+---
+
+<div class="os-tabs" data-os-tabs>
+  <div class="os-tablist" role="tablist" aria-label="Operating system">
+    <button
+      class="os-tab"
+      type="button"
+      role="tab"
+      id={`${id}-tab-unix`}
+      aria-controls={`${id}-panel-unix`}
+      aria-selected="true"
+      data-os-pick="unix">macOS and Linux</button
+    >
+    <button
+      class="os-tab"
+      type="button"
+      role="tab"
+      id={`${id}-tab-windows`}
+      aria-controls={`${id}-panel-windows`}
+      aria-selected="false"
+      tabindex="-1"
+      data-os-pick="windows">Windows</button
+    >
+  </div>
+  <div
+    class="os-panel"
+    role="tabpanel"
+    id={`${id}-panel-unix`}
+    aria-labelledby={`${id}-tab-unix`}
+    data-os-panel="unix"
+  >
+    <CopyBlock text={unix} id={`${id}-unix`} wrap={wrap} />
+  </div>
+  <div
+    class="os-panel"
+    role="tabpanel"
+    id={`${id}-panel-windows`}
+    aria-labelledby={`${id}-tab-windows`}
+    data-os-panel="windows"
+  >
+    <CopyBlock text={windows} id={`${id}-windows`} wrap={wrap} />
+  </div>
+</div>
+
+<script>
+  // One choice per page, remembered across pages (W-17). The root
+  // attribute is already set before paint (Base.astro); this script keeps
+  // the tabs' ARIA state in step with it and handles clicks and the
+  // arrow keys of the tabs pattern.
+  const root = document.documentElement;
+  const KEY = 'mm-os';
+
+  function apply(os: string) {
+    root.setAttribute('data-os', os);
+    document.querySelectorAll<HTMLElement>('[data-os-tabs]').forEach((group) => {
+      group.querySelectorAll<HTMLButtonElement>('[data-os-pick]').forEach((tab) => {
+        const on = tab.dataset.osPick === os;
+        tab.setAttribute('aria-selected', String(on));
+        tab.tabIndex = on ? 0 : -1;
+      });
+      group.querySelectorAll<HTMLElement>('[data-os-panel]').forEach((panel) => {
+        panel.hidden = panel.dataset.osPanel !== os;
+      });
+    });
+  }
+
+  function choose(os: string) {
+    apply(os);
+    try {
+      localStorage.setItem(KEY, os);
+    } catch (e) {
+      /* private mode: the choice just won't persist */
+    }
+  }
+
+  apply(root.getAttribute('data-os') === 'windows' ? 'windows' : 'unix');
+
+  document.querySelectorAll<HTMLButtonElement>('[data-os-pick]').forEach((tab) => {
+    tab.addEventListener('click', () => choose(tab.dataset.osPick || 'unix'));
+    tab.addEventListener('keydown', (e) => {
+      const tabs = Array.from(
+        (tab.parentElement as HTMLElement).querySelectorAll<HTMLButtonElement>('[data-os-pick]'),
+      );
+      let i = tabs.indexOf(tab);
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') i = (i + 1) % tabs.length;
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') i = (i - 1 + tabs.length) % tabs.length;
+      else if (e.key === 'Home') i = 0;
+      else if (e.key === 'End') i = tabs.length - 1;
+      else return;
+      e.preventDefault();
+      tabs[i].focus();
+      choose(tabs[i].dataset.osPick || 'unix');
+    });
+  });
+</script>
+
+<style>
+  .os-tabs {
+    margin: 8px 0 16px;
+  }
+
+  .os-tabs :global(.cmd) {
+    margin-top: 10px;
+  }
+
+  .os-tablist {
+    display: inline-flex;
+    gap: 6px;
+    padding: 4px;
+    border: 1px solid var(--mm-border);
+    border-radius: 999px;
+    background: var(--mm-bg-raised);
+  }
+
+  .os-tab {
+    font-family: var(--font-manrope);
+    font-weight: 600;
+    font-size: 0.8125rem;
+    line-height: 1;
+    color: var(--mm-text-2);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    padding: 7px 14px;
+    cursor: pointer;
+  }
+
+  .os-tab:hover {
+    color: var(--mm-text);
+  }
+
+  .os-tab[aria-selected='true'] {
+    background: var(--mm-callout-bg);
+    color: var(--mm-green-800);
+  }
+
+  :global([data-theme='dark']) .os-tab[aria-selected='true'] {
+    color: var(--mm-mint);
+  }
+
+  /* Before the script runs, the root attribute alone picks the panel, so
+     the first paint is already right; without JavaScript the macOS and
+     Linux panel shows. */
+  :global(html[data-os='unix']) .os-panel[data-os-panel='windows'],
+  :global(html[data-os='windows']) .os-panel[data-os-panel='unix'],
+  :global(html:not([data-os])) .os-panel[data-os-panel='windows'] {
+    display: none;
+  }
+</style>
