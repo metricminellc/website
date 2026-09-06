@@ -4,7 +4,7 @@ import FlowDiagram from '../components/FlowDiagram.astro';
 import HeroVisual from '../components/HeroVisual.astro';
 import ProofStrip from '../components/ProofStrip.astro';
 import AgentEngineDiagram from '../components/AgentEngineDiagram.astro';
-import CopyBlock from '../components/CopyBlock.astro';
+import OsTabs from '../components/OsTabs.astro';
 import Cube from '../components/Cube.astro';
 import {
   REPO_URL,
@@ -17,12 +17,22 @@ import {
   AIRBYTE_CONNECTORS_URL,
 } from '../consts';
 
-// The quickstart quotes the README's "See it run" block at v1.1.0 verbatim.
-const quickstart = [
-  'git clone https://github.com/metricminellc/metricmine.git && cd metricmine',
+// The quickstart quotes the README's "See it run" block verbatim: the
+// macOS and Linux block and, behind the OS toggle (W-17), the Windows block.
+const listCategories = `uv run python -c "from metricmine.query import GoldWarehouse; print(GoldWarehouse().list_fact_categories())"`;
+const quickstartUnix = [
+  'git clone https://github.com/metricminellc/metricmine.git',
+  'cd metricmine',
   'uv sync',
   'make demo-fetch',
-  `uv run python -c "from metricmine.query import GoldWarehouse; print(GoldWarehouse().list_fact_categories())"`,
+  listCategories,
+].join('\n');
+const quickstartWindows = [
+  'git clone https://github.com/metricminellc/metricmine.git',
+  'cd metricmine',
+  'uv sync',
+  'uv run mm demo-fetch',
+  listCategories,
 ].join('\n');
 ---
 
@@ -276,13 +286,13 @@ const quickstart = [
         <p class="eyebrow">For engineers</p>
         <h2>Run it locally.</h2>
         <p>
-          No cloud account, no cluster, no signup. Python 3.12 and uv. Two
-          minutes to a served star; about eight more to rebuild everything from
-          raw data. The step-by-step walkthrough is{' '}
-          <a href={DOC.demo}>the ten-minute demo</a>.
+          No cloud account, no cluster, no signup. Python 3.12 and uv, on
+          macOS, Linux, or Windows x64. Two minutes to a served star; about eight
+          more to rebuild everything from raw data. The step-by-step
+          walkthrough is <a href={DOC.demo}>the ten-minute demo</a>.
         </p>
       </div>
-      <CopyBlock text={quickstart} id="quickstart" />
+      <OsTabs id="quickstart" unix={quickstartUnix} windows={quickstartWindows} />
     </div>
   </section>
 
