@@ -271,10 +271,15 @@ const ogImage = new URL('/og-card.png', SITE_URL).href;
           <a href={ORG_URL}>metricminellc</a>
           <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
         </nav>
-        <p class="footer-credit">
-          Built by <a href={BUILDER_URL}>{BUILDER_NAME}</a>. &copy; 2026{' '}
-          {BUILDER_NAME}.
-        </p>
+        <div class="footer-colophon">
+          <p class="footer-credit">
+            Built by <a href={BUILDER_URL}>{BUILDER_NAME}</a>. &copy; 2026{' '}
+            {BUILDER_NAME}.
+          </p>
+          <!-- The reference beneath the credit (W-18): reference only,
+               smaller and quieter than the credit, on every page. -->
+          <p class="footer-verse">Proverbs 16:3</p>
+        </div>
       </div>
     </footer>
 
@@ -532,6 +537,24 @@ const ogImage = new URL('/og-card.png', SITE_URL).href;
       .footer-credit {
         margin: 0;
         font-size: 0.875rem;
+        color: var(--mm-text-2);
+      }
+
+      /* The credit and the reference sit together, closer to each other
+         than to the rows above. The reference is one step smaller than the
+         credit and stays on the secondary text token, which is the muted
+         color that still passes AA at this size (spec 3.6, rule 5). */
+      .footer-colophon {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-top: 4px;
+      }
+
+      .footer-verse {
+        margin: 0;
+        font-size: 0.8125rem;
+        letter-spacing: 0.02em;
         color: var(--mm-text-2);
       }
     </style>
