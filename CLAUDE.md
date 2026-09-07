@@ -74,9 +74,11 @@ is also the home of the MetricMine brand system. Treat both with care.
   promise. Other connector types are a standing non-goal, stated as such.
 - Social proof is the live GitHub star count and nothing else. No logos, no
   testimonials, no invented adopters.
-- The site speaks about the project, never about any person's career. No
-  hiring, recruiting, resume, or portfolio language on any page or in any
-  file in this repo.
+- The site speaks about the project. The one first-person surface is the
+  builder's own section at the close of About (W-18): the pattern he saw,
+  why he built it, and his thanks, in his words, tied to no organization.
+  No hiring, recruiting, resume, or portfolio language on any page or in
+  any file in this repo, and no page about any person's career.
 - The site names only what the pipeline repository names (the reviewer,
   the skill, the guard, the Action, the tools); nothing is introduced here
   first. A command that differs by platform sits in the OS toggle (W-17),
