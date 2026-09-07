@@ -7,12 +7,18 @@ PR, and the implementation PR follows. Dated 2026-09-05 (W-11).
 
 ## The two readers, one rule
 
-The site speaks about the project, never about any person. It earns a
-technical reader's respect by being accurate and it reads to anyone else
-as an ordinary personal open source project. Every number on a page links
-to the pipeline repository document or test that holds it. There are no
-performance, cost, service-level, or scale figures anywhere on the site;
-the measured curves stay in the repository with their environment.
+The site speaks about the project. One section speaks in the builder's
+own voice, the closing section of About (W-18): the pattern he saw, why he
+built it, and his thanks. It stays a story about the project and its
+origin, ties that origin to no organization, and never turns into a page
+about its author's work history. The site earns a technical reader's
+respect by being accurate and it reads to anyone else as an ordinary
+personal open source project. Every number on a page links to the
+pipeline repository document or test that holds it; the builder's own
+figures in his section (his years of practice, the years of the story)
+are his statement and carry no link. There are no performance, cost,
+service-level, or scale figures anywhere on the site; the measured curves
+stay in the repository with their environment.
 
 ## The pages
 
@@ -24,14 +30,16 @@ the measured curves stay in the repository with their environment.
 | `/where-it-fits/` | Where it fits | Airbyte at the door (Airbyte's own connector count, cited to Airbyte); DuckDB on purpose; MCP at the edge (the five tools); Claude Code beside you; the pattern map; fits when and does not fit when | docs/adding-a-source.md, docs/adoption.md, docs/demo.md, docs/sources-explained.md section 10, docs/spec/serving.md, README.md non-goals |
 | `/get-started/` | Get started | The ten-minute path (Path A, the Claude Desktop wiring, the first question), Path B, the three learning curves, working in the repository with Claude Code, the deeper shelf; the platform-dependent steps behind the OS toggle (W-17) | docs/demo.md, docs/operating.md, docs/adoption.md, docs/adding-a-source.md, docs/README.md, CLAUDE.md, .claude/ |
 | `/why-open-source/` | Why open source | Why the method needs readers; what open source means here (the stable line, the non-goals); the name and logo exception; taking part | README.md (the stability rule, Name and logo), LICENSE, NOTICE, CONTRIBUTING.md, CODE_OF_CONDUCT.md, SECURITY.md, the issue forms |
-| `/about/` | About | The project in one paragraph; the origin line; the name and the mark; the register as memory; the builder credit; contact | README.md, NOTICE, docs/decisions/decision-register.md, docs/verification/gate_proof_findings.md, CLAUDE.md rule 19 |
+| `/about/` | About | The project in one paragraph; the origin line; the name and the mark; the register as memory; the builder credit; contact; the builder's own section, first person, with his portrait, closing with Proverbs 16:3 (W-18) | README.md, NOTICE, docs/decisions/decision-register.md, docs/verification/gate_proof_findings.md, CLAUDE.md rule 19; the builder's own words and portrait (W-18, `src/assets/justin-goff.jpg`); airbyte.com/connectors for the one third-party figure; bible.com for the verse, cited as ESV |
 | `/404` | (none) | Page not found | none |
 
 The header carries What it is, Demo, Where it fits, Get started, Docs
 (docs/README.md in the pipeline repository, W-14), and GitHub, plus the
 theme toggle; below 900 px the links fold behind the menu button. The
 footer carries every page, then GitHub, Docs, Releases, Changelog, the
-organization, and the contact address, then the credit line (W-08, W-10).
+organization, and the contact address, then the credit line (W-08, W-10)
+with the Proverbs 16:3 reference beneath it, reference only, one step
+smaller and quieter than the credit (W-18).
 
 ## Section rules
 
@@ -52,7 +60,9 @@ organization, and the contact address, then the credit line (W-08, W-10).
   platforms stays a plain `CopyBlock`.
 - The rendered transcript (`Transcript.astro`) is built from the measured
   Q2 answer in the serving-questions fixture. The site never shows a
-  product screenshot.
+  product screenshot. The one photograph on the site is the builder's
+  portrait in his own section on About (W-18), a 320 px square crop
+  served from `src/assets/`.
 
 ## Diagrams
 
@@ -85,8 +95,9 @@ Numbers on the site and where each one is held:
 | 3,439 departure hours; 597 flights; the vintage effects | README.md; docs/demo.md; docs/sources.md |
 | under fifteen minutes, eight files by hand | docs/adding-a-source.md |
 | nineteen hard rules; the nine-item checklist; five tools; Oscar | CLAUDE.md; .claude/skills/contract-review/SKILL.md; docs/demo.md; .claude/agents/oscar.md |
-| 600+ connectors | airbyte.com/connectors, Airbyte's own figure, cited inline |
+| 600+ connectors | airbyte.com/connectors, Airbyte's own figure, cited inline (also in the builder's section on About) |
 | v1.1.1 | the release page, linked from the chip |
+| 18 years; 2023; 2026 (the builder's section on About) | the builder's own statement (W-18); no link |
 
 ## Adding a page
 
