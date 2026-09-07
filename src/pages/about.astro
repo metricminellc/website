@@ -4,6 +4,7 @@ import PageHero from '../components/PageHero.astro';
 import Cube from '../components/Cube.astro';
 import symbolLight from '../../brand/web/symbol-color.svg';
 import symbolDark from '../../brand/web/symbol-dark.svg';
+import portrait from '../assets/justin-goff.jpg';
 import {
   DOC,
   REPO_URL,
@@ -14,11 +15,13 @@ import {
   RELEASE_TAG,
   RELEASE_URL,
   CHANGELOG_URL,
+  AIRBYTE_CONNECTORS_URL,
+  PROVERBS_16_3_URL,
 } from '../consts';
 
 const title = 'About | MetricMine';
 const description =
-  'About MetricMine: a contract-driven data pipeline built in the open as a reference implementation, its origin, its name and mark, its decision register, and how to reach the project.';
+  'About MetricMine: a contract-driven data pipeline built in the open as a reference implementation, its origin, its name and mark, its decision register, how to reach the project, and why its builder made it, in his own words.';
 ---
 
 <Base title={title} description={description} path="/about/">
@@ -154,6 +157,115 @@ const description =
     </div>
   </section>
 
+  <!-- The builder's own section (W-18): first person, the pattern he saw,
+       why he built it, and his thanks. The one first-person surface on the
+       site. The connector count is Airbyte's own figure, cited inline as on
+       every other page; the builder's own figures carry no link. -->
+  <section class="band">
+    <div class="container">
+      <div class="prose testimony">
+        <div class="byline">
+          <img
+            class="portrait"
+            src={portrait.src}
+            width="96"
+            height="96"
+            alt="Justin Goff"
+            loading="lazy"
+          />
+          <div>
+            <p class="eyebrow">From the builder</p>
+            <h2>Why I built it.</h2>
+          </div>
+        </div>
+
+        <h3>The pattern</h3>
+        <p>
+          My 18 years of work span software development, application
+          development, data intelligence, data science, machine learning, and
+          AI. One thing has held since college and in every organization
+          since: everyone's data is messy, and everyone's data is fragmented
+          to some degree. No exceptions, whatever the company's size or
+          maturity.
+        </p>
+        <p>
+          That fragmentation is always the blocker. It blocked transactional
+          applications. It blocked analytics. It blocked predictive analytics
+          and machine learning. Today it blocks generative AI and agentic
+          workflows. The workload changes every few years. The bottleneck
+          does not.
+        </p>
+
+        <h3>The fix</h3>
+        <p>
+          The fix has stayed the same too. Start with governance, embed it in
+          standard operating procedures, and make it easy. Easy is the part
+          most organizations skip. If governance depends on how much any one
+          person knows about the process, it will not hold. Automation that
+          applies governance by default is what gives it a chance to stick.
+          Funding to clean this up is almost never there, one more reason the
+          automated path is the only realistic one.
+        </p>
+
+        <h3>2023, then a fresh start</h3>
+        <p>
+          By 2023 I had watched the same cycle repeat for years: fragmented
+          data, a real appetite for unified analytics on top of it, and no
+          clean path between the two. I developed the concept of a unified,
+          automated event star and built a private prototype on my own time.
+          I planned to release it and stopped short. Family time was limited,
+          and there were real gaps in the solution I could not close then.
+        </p>
+        <p>
+          Advances in AI closed that gap, specifically embedding agents into
+          the workflow itself. The 2023 version handled sources statically. I
+          started over from scratch and rebuilt it as a dynamic solution,
+          paired with agentic Claude Code and a proposer agent workflow. Data
+          contracts carry the governance up front, and the same contracts
+          drive deterministic generation of the models. Predictable and
+          inspectable.
+        </p>
+
+        <h3>Trust first</h3>
+        <p>
+          If data cannot be trusted, it does not get adopted. Even correct
+          data sits unused when nobody can verify it. Software and workflows
+          that nobody adopts do nothing. Trust is the prerequisite.
+        </p>
+
+        <h3>What MetricMine is</h3>
+        <p>
+          MetricMine is a downloadable pipeline anyone can run. It is my 18
+          years of hard-earned pattern recognition, extracted, and the thing I
+          wish I had at the start. It would have saved me months. Probably
+          years.
+        </p>
+        <p>
+          Industry standard tools sit at every gate. Airbyte at the door, with
+          its catalog of <a href={AIRBYTE_CONNECTORS_URL}>600+ connectors</a>{' '}
+          (Airbyte's own count) for your own sources. dbt for transformation.
+          DuckDB for local storage. The contracts and the compiled context are
+          warehouse-agnostic files in git, and dbt profiles carry the
+          execution plane. The goal is a short path from a new source to a
+          governed model that agents and downstream applications can use.
+        </p>
+
+        <h3>Thanks</h3>
+        <p>
+          Thank you to my wife and kids for their patience through the late
+          nights and weekends. Thank you to God for the wisdom and energy to
+          keep at this through long work hours and family demands, off and on
+          from 2023 through 2026 and beyond.
+        </p>
+        <p class="signoff">{BUILDER_NAME}</p>
+        <p class="verse">
+          <q>Commit your work to the <span class="lord">LORD</span>, and your plans will be established.</q>
+          <a class="ref" href={PROVERBS_16_3_URL}>Proverbs 16:3 ESV</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
   <style>
     .band {
       background: var(--mm-bg-raised);
@@ -187,6 +299,64 @@ const description =
 
     :global([data-theme='dark']) .symbol-light {
       display: none;
+    }
+
+    /* The builder's section: the portrait beside the opener, the reading
+       column, the sign-off in the heading face, and the closing verse in
+       the brand emphasis color. Nothing italic: the self-hosted faces carry
+       no italic axis (W-12), so a slanted style would be synthesized. */
+    .testimony .byline {
+      display: grid;
+      grid-template-columns: 96px minmax(0, 1fr);
+      gap: 20px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .testimony .byline h2 {
+      margin: 0;
+    }
+
+    .testimony .portrait {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid var(--mm-border);
+    }
+
+    .testimony .signoff {
+      font-family: var(--font-manrope);
+      font-weight: 700;
+      margin: 20px 0 0;
+    }
+
+    .testimony .verse {
+      margin: 24px 0 0;
+      padding-top: 18px;
+      border-top: 1px solid var(--mm-border);
+      line-height: 1.6;
+    }
+
+    .testimony .verse q {
+      font-family: var(--font-manrope);
+      font-weight: 600;
+      font-size: 1.0625rem;
+      color: var(--mm-emph);
+    }
+
+    /* LORD as the ESV sets it: capitals one step smaller, lightly
+       tracked. Set by hand because the faces carry no small-caps feature. */
+    .testimony .verse .lord {
+      font-size: 0.82em;
+      letter-spacing: 0.06em;
+    }
+
+    .testimony .verse .ref {
+      display: inline-block;
+      margin-left: 10px;
+      font-size: 0.875rem;
+      white-space: nowrap;
     }
   </style>
 </Base>

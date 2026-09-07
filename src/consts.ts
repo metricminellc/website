@@ -66,6 +66,10 @@ export const DOC = {
 // Airbyte's own published figure, cited to this page (read 2026-09-05).
 export const AIRBYTE_CONNECTORS_URL = 'https://airbyte.com/connectors';
 
+// The verse the builder's section on About closes with (W-18), cited to
+// the ESV text it quotes.
+export const PROVERBS_16_3_URL = 'https://bible.com/bible/59/pro.16.3.ESV';
+
 export const BUILDER_NAME = 'Justin Goff';
 export const BUILDER_URL = 'https://github.com/justinrgoff';
 
