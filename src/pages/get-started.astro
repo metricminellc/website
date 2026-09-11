@@ -13,11 +13,18 @@ const description =
 // docs/demo.md, Path A and the first question, verbatim. Where a step
 // differs by platform it sits in the OS toggle (W-17): the macOS and Linux
 // text and the Windows text, both quoted from the guide.
+const stepInstallUnix = 'curl -LsSf https://astral.sh/uv/install.sh | sh';
+const stepInstallWindows = [
+  'winget install --id Git.Git -e',
+  'powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"',
+].join('\n');
 const stepClone = [
   'git clone https://github.com/metricminellc/metricmine.git',
   'cd metricmine',
   'uv sync',
 ].join('\n');
+const stepDoctorUnix = 'make doctor';
+const stepDoctorWindows = 'uv run mm doctor';
 const stepFetchUnix = 'make demo-fetch';
 const stepFetchWindows = 'uv run mm demo-fetch';
 const stepList = `uv run python -c "from metricmine.query import GoldWarehouse; print(GoldWarehouse().list_fact_categories())"`;
@@ -69,10 +76,11 @@ const pathBWindows = [
 
 <Base title={title} description={description} path="/get-started/">
   <PageHero eyebrow="Get started" title="Ten minutes to a served star. Then three curves, one document each.">
-    macOS, Linux, or Windows x64, with git and uv. No API keys, no accounts,
-    no cloud resources. Everything below is keyless by design, and every
-    command is quoted from the repository's own demo guide; pick your
-    platform once and every block on the page follows.
+    macOS, Linux, or Windows x64. Two things to install, git and uv, and
+    the first step installs them. No API keys, no accounts, no cloud
+    resources, no administrator rights. Everything below is keyless by
+    design, and every command is quoted from the repository's own demo
+    guide; pick your platform once and every block on the page follows.
   </PageHero>
 
   <section>
@@ -89,20 +97,48 @@ const pathBWindows = [
       <ol class="steps">
         <li>
           <div>
-            <h3>Clone and sync.</h3>
+            <h3>Install git and uv.</h3>
             <p>
               uv provisions the pinned Python 3.12 and every dependency;
-              nothing else is installed globally.
+              nothing else is installed globally. macOS offers to install
+              git the first time you type it and Linux has it in every
+              package manager, so the macOS and Linux line is uv alone. On
+              Windows, use PowerShell, and open a new terminal after the
+              installer runs so the shell sees uv. The guide's What you need
+              carries the alternatives (winget for uv where a managed
+              execution policy refuses the installer line, the git-scm
+              installer) and the reason to clone to a short path.
+            </p>
+            <OsTabs id="gs-install" unix={stepInstallUnix} windows={stepInstallWindows} />
+          </div>
+        </li>
+        <li>
+          <div>
+            <h3>Clone and sync.</h3>
+            <p>
+              One clone, one sync; the lines are the same on every platform.
             </p>
             <CopyBlock text={stepClone} id="gs-clone" />
           </div>
         </li>
         <li>
           <div>
+            <h3>Run the preflight.</h3>
+            <p>
+              Eight checks on the platform, the interpreter, its trust store,
+              uv, the locked toolchain, and the artifact, each with the
+              command that fixes it, and exit 0 when the demo can run. Read
+              it before the fetch, not after something fails.
+            </p>
+            <OsTabs id="gs-doctor" unix={stepDoctorUnix} windows={stepDoctorWindows} />
+          </div>
+        </li>
+        <li>
+          <div>
             <h3>Fetch the released artifact.</h3>
             <p>
-              Every tagged release ships <code>demo/demo.duckdb</code> as a
-              release asset. The committed digest manifest names the release
+              <code>demo/demo.duckdb</code> ships as a release asset. The
+              committed digest manifest names the release to fetch it from
               and pins the asset's sha256, size, and content; the fetch
               verifies all three.
             </p>
@@ -116,7 +152,10 @@ const pathBWindows = [
               Expect three: <code>airport_weather</code> (13,014 rows),{' '}
               <code>flights</code> (166,158), and <code>invoice_lines</code>{' '}
               (44,721), each with its typed table, its authored subject, and
-              its registry keys.
+              its registry keys, on one long line. For a two-line proof that
+              the server itself answers,{' '}
+              <code>uv run python scripts/serve_smoke.py</code> launches it the
+              way a desktop client does.
             </p>
             <CopyBlock text={stepList} id="gs-list" />
           </div>
@@ -151,12 +190,12 @@ const pathBWindows = [
       </ol>
       <div class="callout">
         <p>
-          Something off? <code>make doctor</code> (<code>uv run mm doctor</code>{' '}
-          on Windows) checks the platform, uv, the locked toolchain, and the
-          demo artifact, and prints the two environment lines the local dbt
-          lanes need, in your shell's form. The troubleshooting section,
-          including the TLS note for python.org Pythons and the Windows group,
-          is in <a href={DOC.demo}>docs/demo.md</a>.
+          Something off? Run the preflight again; it prints the two
+          environment lines the local dbt lanes need, in your shell's form,
+          and names the command that fixes whatever it found. The
+          troubleshooting section, with the TLS note for python.org Pythons,
+          a proxy entry, and a Windows group keyed to the error text Windows
+          prints, is in <a href={DOC.demo}>docs/demo.md</a>.
         </p>
       </div>
     </div>
@@ -168,6 +207,9 @@ const pathBWindows = [
         <p class="eyebrow">Path B</p>
         <h2>Replay the whole pipeline, keyless.</h2>
         <p>
+          Path A is the demo; Path B is the proof behind it, and it provisions
+          more: a second CPython 3.10 environment for the pinned connector and
+          the dbt packages, so run it once Path A has answered a question.
           Every source is a committed sample pinned to its publisher's commit
           and digest, so the full path needs no key either. Steps one to three
           also run as one command, <code>make demo</code> (<code>uv run mm demo</code>{' '}
