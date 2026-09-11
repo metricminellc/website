@@ -1,0 +1,60 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import { CONTACT_EMAIL, DOC, REPO_URL } from '../consts';
+
+const title = 'Privacy | MetricMine';
+const description =
+  'What metricmine.ai does and does not collect: static pages, no cookies, no account, one cookieless analytics beacon, one call to the GitHub API.';
+const siteRepo = DOC.websiteRepo;
+---
+
+<Base title={title} description={description} path="/privacy/">
+  <PageHero eyebrow="Privacy" title="Static pages. No cookies. No account.">
+    What this site does with your visit, in full, because the list is
+    short.
+  </PageHero>
+
+  <section>
+    <div class="container">
+      <div class="prose">
+        <p>
+          metricmine.ai is a static site served from GitHub Pages. It sets
+          no cookies, asks for no account, and has no forms. Nothing you
+          type on it goes anywhere, because there is nowhere on it to type.
+        </p>
+        <p>
+          Two things leave your browser when a page loads. One is a page
+          view sent to Cloudflare Web Analytics, a cookieless beacon that
+          counts visits without identifying visitors; its token is in the
+          open in the site's{' '}
+          <a href={siteRepo}>repository</a>, and no other tracker is
+          permitted on this site. The other is one unauthenticated request
+          to the GitHub API for the star count shown on the home page,
+          which is GitHub's public figure.
+        </p>
+        <p>
+          The fonts are served from this site, not from a font service. The
+          logo art is served from this site. There is no third-party script
+          beyond the beacon named above.
+        </p>
+        <p>
+          Links leave the site: to the{' '}
+          <a href={REPO_URL}>MetricMine repository</a> on GitHub, and to a
+          few pages cited by name where they are cited. Each of those has
+          its own terms.
+        </p>
+        <p>
+          The contact address is{' '}
+          <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>. Mail sent
+          there is read by the builder and kept only as long as the
+          conversation needs it.
+        </p>
+        <p>
+          This page changes only by a pull request in the site's
+          repository, so its history is public.
+        </p>
+      </div>
+    </div>
+  </section>
+</Base>
