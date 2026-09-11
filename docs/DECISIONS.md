@@ -3,7 +3,8 @@
 Website workstream decisions, W-series. W-01 through W-09 are dated
 2026-08-19; W-10 is dated 2026-08-24; W-11 through W-16 are dated
 2026-09-05 (the W2 refresh); W-17 is dated 2026-09-06 (W3, the Windows path);
-W-18 is dated 2026-09-07 (W4, the builder's voice).
+W-18 is dated 2026-09-07 (W4, the builder's voice); W-19 and W-20 are
+dated 2026-09-11 (W5, the first-run arc).
 The product decision register (D-series)
 and the brand decision register (B-series, brand/BRAND_STANDARDS.md
 Section 9) live with their own documents. Full rationale sits in the
@@ -29,6 +30,8 @@ project's planning records.
 | W-16 | metricmine.io forwards permanently to https://metricmine.ai at the registrar. No code, no record in this repo beyond docs/DEPLOY.md |
 | W-17 | A command block that differs by platform sits in an OS toggle (src/components/OsTabs.astro): a macOS and Linux panel and a Windows panel, both server-rendered, one hidden by the root's data-os attribute, which Base.astro resolves before paint from the remembered choice (mm-os in localStorage) or the visitor's platform, so there is no layout shift and no fetch. One choice per page, synchronized across every toggle and remembered across pages; keyboard-operable with the tabs pattern; no external request. Both panels quote the pipeline repository's docs/demo.md, the Windows text after it lands there (D-42), never before. A block whose text is the same on both platforms stays a plain CopyBlock |
 | W-18 | The site has one first-person surface: the builder's own section at the close of About, in his voice and with his portrait beside the opener, covering the pattern he saw across his years of practice, why he built MetricMine, and his thanks, ending with Proverbs 16:3 quoted in full. The footer of every page carries the Proverbs 16:3 reference beneath the credit line, reference only, one step smaller and quieter than the credit. Both stay inside the copy rules: no job-search or career-page language, no statements of what the project does not do, the origin tied to no organization, every project figure linked, and the builder's own figures (his years of practice, the years of the story) unlinked as his statement |
+| W-19 | The site carries a privacy page at `/privacy/`, linked from the footer of every page through `PAGES`, stating what the site does and does not collect: static pages on GitHub Pages, no cookies, no account, the cookieless Cloudflare beacon (W-07), the one unauthenticated GitHub API call for the star count (W-12), and the contact address. It names no legal entity (W-10) and changes only by a pull request, so its history is public |
+| W-20 | The repository has a CI gate on every pull request and every push to main (`.github/workflows/gates.yml`): the build, the glyph gate, the three copy greps as a script, the two register counts held to the pipeline repository's registers on main, and every repository path the site links to held to the pipeline repository's tree. The two counts are constants in `src/counts.ts` rendered as figures or words; a page never carries a count as a literal again |
 
 Standing constraints inherited from the project: reference-implementation
 positioning, no performance or service-level claims, verifiable social proof
