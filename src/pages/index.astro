@@ -24,6 +24,7 @@ const quickstartUnix = [
   'git clone https://github.com/metricminellc/metricmine.git',
   'cd metricmine',
   'uv sync',
+  'make doctor',
   'make demo-fetch',
   listCategories,
 ].join('\n');
@@ -31,6 +32,7 @@ const quickstartWindows = [
   'git clone https://github.com/metricminellc/metricmine.git',
   'cd metricmine',
   'uv sync',
+  'uv run mm doctor',
   'uv run mm demo-fetch',
   listCategories,
 ].join('\n');
@@ -286,10 +288,11 @@ const quickstartWindows = [
         <p class="eyebrow">For engineers</p>
         <h2>Run it locally.</h2>
         <p>
-          No cloud account, no cluster, no signup. Python 3.12 and uv, on
-          macOS, Linux, or Windows x64. Two minutes to a served star; about eight
-          more to rebuild everything from raw data. The step-by-step
-          walkthrough is <a href={DOC.demo}>the ten-minute demo</a>.
+          No cloud account, no cluster, no signup. git and uv, on macOS,
+          Linux, or Windows x64; uv provisions the pinned Python 3.12. Two
+          minutes to a served star; about eight more to rebuild everything
+          from raw data. The step-by-step walkthrough, with the install lines
+          and the preflight, is <a href={DOC.demo}>the ten-minute demo</a>.
         </p>
       </div>
       <OsTabs id="quickstart" unix={quickstartUnix} windows={quickstartWindows} />

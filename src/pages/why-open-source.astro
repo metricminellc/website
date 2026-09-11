@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import Cube from '../components/Cube.astro';
 import { DOC, LICENSE_URL, REPO_URL } from '../consts';
+import { FINDINGS, words } from '../counts';
 
 const title = 'Why open source | MetricMine';
 const description =
@@ -131,7 +132,7 @@ const description =
           The issue forms know the project's shapes: a bug, a contract change,
           and a finding. A finding is the project's favorite kind of issue,
           because a measurement that contradicts the plan is how the plan
-          improves, and fifty-three of them are on record already.
+          improves, and {words(FINDINGS)} of them are on record already.
         </p>
       </div>
     </div>
