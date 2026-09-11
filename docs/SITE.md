@@ -28,9 +28,10 @@ stay in the repository with their environment.
 | `/what-it-is/` | What it is | What it is and what it is not; alongside dbt, Airbyte, DuckDB, Claude Code, and MCP clients; the meaning-versus-structure paragraph | README.md (the front door and the trade-offs), CLAUDE.md non-goals, docs/adoption.md |
 | `/demo/` | Demo | The family at a glance; why it can be trusted; the declared joins; the rendered Q2 transcript and the six other measured answers; data and expert context kept apart; Path A | docs/sources-explained.md, docs/sources.md, docs/demo.md, tests/fixtures/serving_questions.json, tests/test_declared_joins.py, tests/test_aviation_conservation.py, tests/test_committed_samples.py, tests/test_serving_questions.py |
 | `/where-it-fits/` | Where it fits | Airbyte at the door (Airbyte's own connector count, cited to Airbyte); DuckDB on purpose; MCP at the edge (the five tools); Claude Code beside you; the pattern map; fits when and does not fit when | docs/adding-a-source.md, docs/adoption.md, docs/demo.md, docs/sources-explained.md section 10, docs/spec/serving.md, README.md non-goals |
-| `/get-started/` | Get started | The ten-minute path (Path A, the Claude Desktop wiring, the first question), Path B, the three learning curves, working in the repository with Claude Code, the deeper shelf; the platform-dependent steps behind the OS toggle (W-17) | docs/demo.md, docs/operating.md, docs/adoption.md, docs/adding-a-source.md, docs/README.md, CLAUDE.md, .claude/ |
+| `/get-started/` | Get started | The ten-minute path (the install step for git and uv, Path A with the preflight before the fetch, the Claude Desktop wiring, the first question), Path B and what it additionally provisions, the three learning curves, working in the repository with Claude Code, the deeper shelf; the platform-dependent steps behind the OS toggle (W-17) | docs/demo.md, docs/operating.md, docs/adoption.md, docs/adding-a-source.md, docs/README.md, CLAUDE.md, .claude/ |
 | `/why-open-source/` | Why open source | Why the method needs readers; what open source means here (the stable line, the non-goals); the name and logo exception; taking part | README.md (the stability rule, Name and logo), LICENSE, NOTICE, CONTRIBUTING.md, CODE_OF_CONDUCT.md, SECURITY.md, the issue forms |
 | `/about/` | About | The project in one paragraph; the origin line; the name and the mark; the register as memory; the builder credit; contact; the builder's own section, first person, with his portrait, closing with Proverbs 16:3 (W-18) | README.md, NOTICE, docs/decisions/decision-register.md, docs/verification/gate_proof_findings.md, CLAUDE.md rule 19; the builder's own words and portrait (W-18, `src/assets/justin-goff.jpg`); airbyte.com/connectors for the one third-party figure; bible.com for the verse, cited as ESV |
+| `/privacy/` | Privacy | What the site does and does not collect: static pages, no cookies, no account, the cookieless beacon, the one GitHub API call, the contact address; linked from the footer of every page (W-19) | none; the site's own behavior, held by this spec |
 | `/404` | (none) | Page not found | none |
 
 The header carries What it is, Demo, Where it fits, Get started, Docs
@@ -89,14 +90,15 @@ Numbers on the site and where each one is held:
 | 31 models, 303 tests, PASS=334; 247,555 bronze rows | docs/demo.md |
 | 22 of 31 engine-emitted; nine human-owned silver models | README.md |
 | 13 contracts | contracts/ |
-| 42 decisions, 57 findings | docs/decisions/decision-register.md; docs/verification/gate_proof_findings.md |
+| 42 decisions, 58 findings | docs/decisions/decision-register.md; docs/verification/gate_proof_findings.md; on the site the two are constants in `src/counts.ts`, rendered as words where a sentence needs them, and `scripts/check-counts.mjs` holds them to the two registers on main (W-20) |
 | join completeness 1.0000, 0.8396, 1.0000, 0.9791, 1.0000, 0.9994 and the floors | docs/sources.md; tests/test_declared_joins.py |
 | 29.44 vs 12.42 minutes; 8.95 vs 2.41 percent; 13,492 and 152,569 flights; 97 flights; 3,471 flights; the other measured answers | tests/fixtures/serving_questions.json; tests/test_serving_questions.py |
 | 3,439 departure hours; 597 flights; the vintage effects | README.md; docs/demo.md; docs/sources.md |
 | under fifteen minutes, eight files by hand | docs/adding-a-source.md |
 | nineteen hard rules; the nine-item checklist; five tools; Oscar | CLAUDE.md; .claude/skills/contract-review/SKILL.md; docs/demo.md; .claude/agents/oscar.md |
 | 600+ connectors | airbyte.com/connectors, Airbyte's own figure, cited inline (also in the builder's section on About) |
-| v1.1.1 | the release page, linked from the chip |
+| the install lines (the uv installer as Astral documents it, winget, git-scm); `make doctor` before the fetch; what Path B additionally provisions | docs/demo.md (What you need, Path A, Path B) |
+| v1.1.2 | the release page, linked from the chip |
 | 18 years; 2023; 2026 (the builder's section on About) | the builder's own statement (W-18); no link |
 
 ## Adding a page
