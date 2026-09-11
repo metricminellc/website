@@ -18,6 +18,7 @@ import {
   AIRBYTE_CONNECTORS_URL,
   PROVERBS_16_3_URL,
 } from '../consts';
+import { DECISIONS, FINDINGS, Words } from '../counts';
 
 const title = 'About | MetricMine';
 const description =
@@ -99,9 +100,9 @@ const description =
       <div class="cards">
         <article class="card">
           <Cube />
-          <h3>Forty-two decisions.</h3>
+          <h3>{Words(DECISIONS)} decisions.</h3>
           <p>
-            D-01 through D-42 with their amendments, each condensed in full
+            D-01 through D-{DECISIONS} with their amendments, each condensed in full
             operational substance, and a crosswalk to the rule each one became
             in the coding agent's instructions.
           </p>
@@ -109,10 +110,10 @@ const description =
         </article>
         <article class="card">
           <Cube />
-          <h3>Fifty-seven findings.</h3>
+          <h3>{Words(FINDINGS)} findings.</h3>
           <p>
-            F-01 through F-57: toolchain behavior observed live, never
-            inferred, from the first scratch gate proof to the Windows rung,
+            F-01 through F-{FINDINGS}: toolchain behavior observed live, never
+            inferred, from the first scratch gate proof to the toolchain rung,
             each one with the evidence it cites.
           </p>
           <span class="under"><a href={DOC.findings}>docs/verification/gate_proof_findings.md</a></span>

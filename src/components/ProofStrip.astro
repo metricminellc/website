@@ -4,6 +4,7 @@
 // performance, cost, or scale claim; the measured curves stay in
 // docs/scale.md with their environment, by rule (D-40).
 import { DOC } from '../consts';
+import { DECISIONS, FINDINGS } from '../counts';
 
 const stats = [
   {
@@ -37,8 +38,8 @@ const stats = [
     src: 'contracts/',
   },
   {
-    n: '42',
-    l: 'binding decisions in a versioned register, with 57 measured findings beside them',
+    n: String(DECISIONS),
+    l: `binding decisions in a versioned register, with ${FINDINGS} measured findings beside them`,
     href: DOC.register,
     src: 'docs/decisions/',
   },
