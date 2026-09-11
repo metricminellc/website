@@ -14,7 +14,7 @@ spec lives at [brand/BRAND_STANDARDS.md](brand/BRAND_STANDARDS.md).
 
 ## Stack
 
-A small static site: the home page and six pages, mapped in
+A small static site: the home page and seven pages, mapped in
 [docs/SITE.md](docs/SITE.md). [Astro](https://astro.build) 7, no client
 framework, no CMS, fonts self-hosted, logo art served as SVG from the
 brand's vector masters. Deployed to GitHub Pages by
@@ -28,7 +28,13 @@ npm run dev        # local dev server
 npm run build      # production build to dist/
 npm run preview    # serve the production build
 node scripts/check-glyphs.mjs   # the glyph gate (see CLAUDE.md)
+node scripts/check-copy.mjs     # the copy greps
+node scripts/check-counts.mjs   # the register counts, against the pipeline repository
+node scripts/check-repo-paths.mjs   # every linked repository path, against its tree
 ```
+
+CI runs the build and all four gates on every pull request
+([gates.yml](.github/workflows/gates.yml), W-20).
 
 Node 22 or newer locally. CI builds on Node 24.
 
@@ -40,7 +46,7 @@ brand/             brand system of record: spec, vectors, rasters, masters, web 
 public/            favicons, robots.txt, sitemap.xml, social card
 docs/              decision register, site spec, deployment notes
 scripts/           the web-crop generator and the glyph gate
-.github/workflows/ build and deploy to GitHub Pages
+.github/workflows/ the gates on every pull request; build and deploy to GitHub Pages
 CLAUDE.md          working rules for AI-assisted changes in this repo
 ```
 

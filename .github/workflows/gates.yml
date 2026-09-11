@@ -1,0 +1,50 @@
+# The gates on every pull request and every push to main (W-20): the build,
+# the glyph gate, the copy greps, the two register counts against the
+# pipeline repository's registers, and every linked repository path against
+# its tree. Deploy (deploy.yml) runs separately on push to main.
+name: Gates
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gates-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  gates:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Node 24
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install
+        run: npm ci --no-audit --no-fund
+
+      - name: Build
+        run: npm run build
+
+      - name: Glyph gate
+        run: node scripts/check-glyphs.mjs
+
+      - name: Copy gate
+        run: node scripts/check-copy.mjs
+
+      - name: Counts against the registers
+        run: node scripts/check-counts.mjs
+
+      - name: Repository paths against the tree
+        run: node scripts/check-repo-paths.mjs
