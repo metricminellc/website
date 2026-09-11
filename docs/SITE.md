@@ -98,7 +98,7 @@ Numbers on the site and where each one is held:
 | nineteen hard rules; the nine-item checklist; five tools; Oscar | CLAUDE.md; .claude/skills/contract-review/SKILL.md; docs/demo.md; .claude/agents/oscar.md |
 | 600+ connectors | airbyte.com/connectors, Airbyte's own figure, cited inline (also in the builder's section on About) |
 | the install lines (the uv installer as Astral documents it, winget, git-scm); `make doctor` before the fetch; what Path B additionally provisions | docs/demo.md (What you need, Path A, Path B) |
-| v1.1.2 | the release page, linked from the chip |
+| v1.1.3 | the release page, linked from the chip |
 | 18 years; 2023; 2026 (the builder's section on About) | the builder's own statement (W-18); no link |
 
 ## Adding a page
