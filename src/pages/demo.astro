@@ -17,6 +17,7 @@ const pathAUnix = [
   'git clone https://github.com/metricminellc/metricmine.git',
   'cd metricmine',
   'uv sync',
+  'make doctor',
   'make demo-fetch',
   listCategories,
 ].join('\n');
@@ -24,6 +25,7 @@ const pathAWindows = [
   'git clone https://github.com/metricminellc/metricmine.git',
   'cd metricmine',
   'uv sync',
+  'uv run mm doctor',
   'uv run mm demo-fetch',
   listCategories,
 ].join('\n');
