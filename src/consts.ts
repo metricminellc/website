@@ -82,6 +82,7 @@ export const PAGES = [
   { href: '/get-started/', label: 'Get started' },
   { href: '/why-open-source/', label: 'Why open source' },
   { href: '/about/', label: 'About' },
+  { href: '/privacy/', label: 'Privacy' },
 ];
 export const HEADER_PAGES = PAGES.slice(0, 4);
 
