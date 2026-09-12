@@ -78,9 +78,10 @@ const pathBWindows = [
   <PageHero eyebrow="Get started" title="Ten minutes to a served star. Then three curves, one document each.">
     macOS, Linux, or Windows x64. Two things to install, git and uv, and
     the first step installs them. No API keys, no accounts, no cloud
-    resources, no administrator rights. Everything below is keyless by
-    design, and every command is quoted from the repository's own demo
-    guide; pick your platform once and every block on the page follows.
+    resources, and no administrator rights after the two installs.
+    Everything below is keyless by design, and every command is quoted
+    from the repository's own demo guide; pick your platform once and
+    every block on the page follows.
   </PageHero>
 
   <section>
@@ -107,7 +108,9 @@ const pathBWindows = [
               installer runs so the shell sees uv. The guide's What you need
               carries the alternatives (winget for uv where a managed
               execution policy refuses the installer line, the git-scm
-              installer) and the reason to clone to a short path.
+              installer and its portable build where the git line's
+              request for approval is not yours to give) and the reason
+              to clone to a short path.
             </p>
             <OsTabs id="gs-install" unix={stepInstallUnix} windows={stepInstallWindows} />
           </div>
@@ -164,11 +167,13 @@ const pathBWindows = [
           <div>
             <h3>Wire it into Claude Desktop.</h3>
             <p>
-              Merge this into <code>claude_desktop_config.json</code> (on
-              macOS under Application Support/Claude; on Windows under{' '}
-              <code>%APPDATA%\Claude</code>, opened from Settings, Developer,
-              Edit Config), replace the command path with your absolute clone
-              path, quit Claude Desktop fully, and reopen it. A new chat lists{' '}
+              Merge this into <code>claude_desktop_config.json</code>, which
+              Claude Desktop opens from Settings, Developer, Edit Config on
+              either platform and creates when none exists yet (on macOS
+              under Application Support/Claude; on Windows under{' '}
+              <code>%APPDATA%\Claude</code>), replace the command path with
+              your absolute clone path, quit Claude Desktop fully, and reopen
+              it. A new chat lists{' '}
               <code>metricmine-gold</code> with five tools. The guide carries
               the note for the Microsoft Store build.
             </p>
