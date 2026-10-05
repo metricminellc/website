@@ -58,17 +58,23 @@ const stepAsk =
 // docs/demo.md, Path B, verbatim, both platforms.
 const pathBUnix = [
   'export DBT_PROFILES_DIR="$PWD/transform"',
+  'export ADBC_DRIVER_PATH="$PWD/.adbc"',
+  'make driver',
   'uv run dbt deps --project-dir transform',
   'make ingest',
-  'uv run dbt build --project-dir transform --target local',
+  'uv run dbt run --project-dir transform --target local',
+  'uv run dbt test --project-dir transform --target local',
   'make export-demo',
   'uv run pytest -q',
 ].join('\n');
 const pathBWindows = [
   '$env:DBT_PROFILES_DIR = "$PWD\\transform"',
+  '$env:ADBC_DRIVER_PATH = "$PWD\\.adbc"',
+  'uv run mm driver',
   'uv run dbt deps --project-dir transform',
   'uv run mm ingest',
-  'uv run dbt build --project-dir transform --target local',
+  'uv run dbt run --project-dir transform --target local',
+  'uv run dbt test --project-dir transform --target local',
   'uv run mm export-demo',
   'uv run pytest -q',
 ].join('\n');
@@ -195,7 +201,7 @@ const pathBWindows = [
       </ol>
       <div class="callout">
         <p>
-          Something off? Run the preflight again; it prints the two
+          Something off? Run the preflight again; it prints the three
           environment lines the local dbt lanes need, in your shell's form,
           and names the command that fixes whatever it found. The
           troubleshooting section, with the TLS note for python.org Pythons,
@@ -214,19 +220,22 @@ const pathBWindows = [
         <p>
           Path A is the demo; Path B is the proof behind it, and it provisions
           more: a second CPython 3.10 environment for the pinned connector and
-          the dbt packages, so run it once Path A has answered a question.
-          Every source is a committed sample pinned to its publisher's commit
-          and digest, so the full path needs no key either. Steps one to three
-          also run as one command, <code>make demo</code> (<code>uv run mm demo</code>{' '}
-          on Windows). From the repo root:
+          the vendored dbt package, so run it once Path A has answered a
+          question. Every source is a committed sample pinned to its
+          publisher's commit and digest, so the full path needs no key either.
+          Steps one to four also run as one command, <code>make demo</code>{' '}
+          (<code>uv run mm demo</code> on Windows). From the repo root:
         </p>
       </div>
       <OsTabs id="gs-path-b" unix={pathBUnix} windows={pathBWindows} />
       <p class="prose">
         What to expect: <code>make ingest</code> lands 247,555 bronze rows
         across seven tables exactly as they appear in the committed extracts;{' '}
-        <code>dbt build</code> compiles the 31 contracted models and ends{' '}
-        <code>PASS=334 WARN=0 ERROR=0 SKIP=0</code>; <code>make export-demo</code>{' '}
+        <code>make driver</code> registers the pinned DuckDB engine as dbt's
+        driver; <code>dbt run</code> builds the 31 contracted models and ends{' '}
+        <code>Summary: 31 total | 31 success</code>; <code>dbt test</code> runs
+        every test and ends <code>Summary: 303 total | 303 success</code>;{' '}
+        <code>make export-demo</code>{' '}
         rebuilds the artifact from your freshly built warehouse and verifies it
         content-equal by query; <code>pytest</code> runs the full suite,
         including the serving round trip, the declared-join gate, and the demo
