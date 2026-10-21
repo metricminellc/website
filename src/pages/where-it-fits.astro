@@ -12,8 +12,8 @@ const description =
 const tools = [
   { t: 'list_fact_categories', w: 'which fact categories exist, with row counts, the typed table to query, each category’s subject in the words of the people who approved its contracts, and the registry keys' },
   { t: 'get_schema', w: 'the declared field manifest behind a schema key' },
-  { t: 'get_context', w: 'the full compiled context behind a schema key, in two named parts: data (what the columns are) and expert_context (what people wrote about them), plus the contract citation' },
-  { t: 'query', w: 'one row-capped SELECT; anything else refuses, naming the failed check' },
+  { t: 'get_context', w: 'the full compiled context behind a schema key: data (what the columns are), expert_context (what people wrote about them, with the document quotes a person bound where the governed documents register binds a field), and, where a field is bound, documents (each cited document once, what a person declared apart from what code measured), plus the contract citation' },
+  { t: 'query', w: 'one row-capped SELECT against the gold schema; anything else refuses, naming the failed check' },
   { t: 'lookup_record', w: 'every place a content key resolves: registry, fact, dimension, or a derived identity' },
 ];
 
