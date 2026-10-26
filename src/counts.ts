@@ -3,7 +3,7 @@
 // scripts/check-counts.mjs, which CI runs on every pull request: a count
 // that drifts fails the gate rather than the reader. A page never carries
 // either number as a literal; it renders DECISIONS or FINDINGS from here.
-export const DECISIONS = 43;
+export const DECISIONS = 44;
 export const FINDINGS = 73;
 
 const ONES = [
