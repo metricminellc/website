@@ -4,7 +4,7 @@
 // that drifts fails the gate rather than the reader. A page never carries
 // either number as a literal; it renders DECISIONS or FINDINGS from here.
 export const DECISIONS = 44;
-export const FINDINGS = 74;
+export const FINDINGS = 75;
 
 const ONES = [
   'zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight',
